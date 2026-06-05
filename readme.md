@@ -78,7 +78,7 @@ Algorithme de surenchère automatique :
 
 # 5 . Instructions de lancement du projet :
 pour lancer l'application des enchères, suivez les étapes ci-dessous :
-- lancer le backend (déploiment de l'api REST): application spring boot :  java -jar target/enchers-service-0.0.1-SNAPSHOT.jar
+- lancer le backend (déploiment de l'api REST): application spring boot :  java -jar target/encheres-service-0.0.1-SNAPSHOT.jar
     l'initialisation la base de données sera faite dans cette étape via spring boot qui configure une base de données en mémoire de type H2.
     et des données de test (clients, liste des enchères actives) seront insérées dans la base de données au démarrage de l'application.
 - lancer le frontend : application angular : npm start
