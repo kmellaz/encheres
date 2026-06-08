@@ -15,7 +15,7 @@
 
 
 **Enchère automatique:**<br>
-1. Un client A sélectionne une enchère active et définit un montant maximal.<br>
+1. Un client A sélectionne une enchère active dans le système et définit un montant maximal.<br>
 2. Le système enregistre l’offre automatique avec le max défini. Le prix courant de l’enchere reste le même montant_0.<br>
 3. Pour la même enchere, un autre client B mise un montant₁ > montant_0 <br>
 2. Le système surenchérit automatiquement pour le client A avec un montant₂ = montant₁ ++ <br> 
@@ -28,22 +28,23 @@
 
 
 # 3. Services métier
-# - **EnchereService**
-   *trouverEncheresActives()*: renvoie une liste d’enchères.<br>
-   *trouverEnchereParId()*: renvoie une enchère par son identifiant.
-
-# - **OffreManuelleService**
-*deposerOffre(clientId, enchereId, montant)* : le client soumet une offre avec un montant pour une enchère donnée.
 
 # - **ClientService**
 *trouverClients()*: renvoie une liste des clients actifs dans le système.<br>
 
 
+# - **EnchereService**
+   *trouverEncheresActives()*: renvoie une liste d’enchères.<br>
+   *trouverEnchereParId()*: renvoie une enchère par son identifiant.
+
+# - **OffreManuelleService**
+*deposerOffre(clientId, enchereId, montant)* : le client soumet une offre avec un montant pour une enchère donnée.<br>
 **Règles :**
 
 - L’enchère doit être active.
 - La date fin de l’enchère doit être postérieure à la date du jour.
 - Montant > montant courant de l’enchère > 0.
+
 
 # - **OffreAutomatiqueService**
 *creerOffre(clientId, enchereId, montant)* : le client configure une offre avec un montant maximum.
@@ -52,7 +53,7 @@
 - L’enchère doit être active.
 - Le montant > 0.
 Algorithme de surenchère automatique :
-1. le client récupére l’enchère active et propose un montant MAX.
+1. le client récupére l’enchère active et définit un montant MAX.
 2. le système vérifie si le montant de l’offre automatique est supérieur au montant courant de l’enchère.
 3. Si oui, le système encherit automatiquement en augmentant le montant courant de l’enchère jusqu’à atteindre le montant maximum défini par le client.
 4. Si le montant de l’offre automatique atteint le montant maximum, le système arrête de surenchérir pour ce client.

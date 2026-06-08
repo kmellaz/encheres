@@ -10,5 +10,6 @@ import java.math.BigDecimal;
 @SuperBuilder
 @NoArgsConstructor
 public class OffreAutoDto extends OffreDto{
+    private BigDecimal montantAuto;
     private BigDecimal montantMax;
 }

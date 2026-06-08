@@ -2,6 +2,8 @@ package fr.carrefour.kata.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 @DiscriminatorColumn(name = "TYPE_OFFRE")
 @Table(name = "offre")
 @Data
+@SuperBuilder
+@NoArgsConstructor
 public abstract class Offre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
