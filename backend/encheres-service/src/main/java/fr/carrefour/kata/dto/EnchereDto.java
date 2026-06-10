@@ -4,8 +4,10 @@ import fr.carrefour.kata.enums.StatutEnchere;
 import fr.carrefour.kata.enums.TypeEnchere;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,6 +15,8 @@ import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class EnchereDto {
     private Long id;
     private String description;

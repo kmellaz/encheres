@@ -41,7 +41,7 @@ public class OffreAutoService {
             throw new MontantIncorrectException("Le montant doit être supérieur à zéro id: " + enchereId);
         }
         if (montantMax.compareTo(enchere.getMontantCourant()) <= 0) {
-            throw new MontantEnchereInsuffisant(montantMax, enchere.getMontantCourant(), "Le montant doit être supérieur au montant courant de l'enchère id: " + enchereId);
+            throw new MontantEnchereInsuffisant(montantMax, enchere.getMontantCourant(), "Le montant doit être supérieur au montant courant de l'enchère : > " + enchere.getMontantCourant());
 
         }
 

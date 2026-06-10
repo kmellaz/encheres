@@ -24,7 +24,7 @@ public class OffreManuelleService {
 
     /**
      * Le client soumet une offre avec un montant pour une enchère donnée.
-     * si le type de l'enchere cible est automatique Le système surencherit automatiquement pour le client qui a configuré l'enchere
+     * si le type de l'enchere est automatique Le système surencherit automatiquement pour le client qui a configuré l'enchere
      * en augmentant le montant d'un pas de 1 euro jusqu'à atteindre le maximum configuré
      *
      * @param clientId
@@ -44,7 +44,7 @@ public class OffreManuelleService {
             throw new MontantIncorrectException("Le montant doit être supérieur à zéro id: " + enchereId);
         }
         if (montant.compareTo(enchere.getMontantCourant()) <= 0) {
-            throw new MontantEnchereInsuffisant(montant, enchere.getMontantCourant(), "Le montant doit être supérieur au montant courant de l'enchère id: " + enchereId);
+            throw new MontantEnchereInsuffisant(montant, enchere.getMontantCourant(), "Le montant doit être supérieur au montant courant de l'enchère : > " + enchere.getMontantCourant());
         }
 
         Offre offre = OffreManuelle.builder()

@@ -52,10 +52,11 @@
 **Règles :**
 - L’enchère doit être active.
 - Le montant > 0.
-Algorithme de surenchère automatique :
-1. le client récupére l’enchère active et définit un montant MAX.
+
+<u>Algorithme de surenchère automatique :</u>
+1. le client A récupére l’enchère active et définit un montant MAX.
 2. le système vérifie si le montant de l’offre automatique est supérieur au montant courant de l’enchère.
-3. Si oui, le système encherit automatiquement en augmentant le montant courant de l’enchère jusqu’à atteindre le montant maximum défini par le client.
+3. Si oui, le système encherit automatiquement les autre clients au nom du client A, en augmentant le montant courant de l’enchère jusqu’à atteindre le montant maximum défini par le client A.
 4. Si le montant de l’offre automatique atteint le montant maximum, le système arrête de surenchérir pour ce client.
 
 # 4. Le Front Angular :
@@ -84,6 +85,7 @@ pour lancer l'application des enchères, suivez les étapes ci-dessous :
     et des données de test (clients, liste des enchères actives) seront insérées dans la base de données au démarrage de l'application.
 - lancer le frontend : application angular : npm start
 - accéder à l'application : http://localhost:4200/encheres
+- accéder à la documentation de l'api REST : http://localhost:8080/swagger-ui/index.html
 
 
 # 6 . Stack technique utilisée :
@@ -99,4 +101,5 @@ pour lancer l'application des enchères, suivez les étapes ci-dessous :
 Spring Boot 4.0.5 <br>
 Hibernate <br>
 API REST <br>
+SWAGGER <br>
 Base de donnée mémoire de type H2*

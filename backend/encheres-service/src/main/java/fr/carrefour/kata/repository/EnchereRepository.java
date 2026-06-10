@@ -11,5 +11,5 @@ import java.util.List;
 public interface EnchereRepository extends JpaRepository<Enchere, Long> {
 
     @Query("select e from Enchere e where e.statut = :statut order by e.dateFin asc")
-    List<Enchere> trouverEncheresActives(@Param("status") StatutEnchere statut);
+    List<Enchere> trouverEncheresActives(@Param("statut") StatutEnchere statut);
 }
