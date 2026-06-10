@@ -16,6 +16,6 @@ public class Client {
     private String prenom;
     private String email;
 
-    @OneToMany (cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "client", cascade = CascadeType.ALL)
     private List<Offre> offres;
 }

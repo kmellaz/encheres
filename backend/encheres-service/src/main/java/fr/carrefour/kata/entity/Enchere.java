@@ -26,6 +26,6 @@ public class Enchere {
     @Enumerated(EnumType.STRING)
     private TypeEnchere type;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "enchere", cascade = CascadeType.ALL)
     private List<Offre> offres;
 }
