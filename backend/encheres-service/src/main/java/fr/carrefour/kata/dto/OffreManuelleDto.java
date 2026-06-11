@@ -6,7 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-
+/**
+ * DTO pour l'entité OffreManuelle.
+ *
+ */
 @Data
 @SuperBuilder
 @NoArgsConstructor

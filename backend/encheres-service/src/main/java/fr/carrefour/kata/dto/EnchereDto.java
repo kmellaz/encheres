@@ -13,6 +13,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * DTO pour l'entité Enchere (transmis par l'API).
+ *
+ * Contient les champs exposés aux consommateurs de l'API.
+ *
+ */
 @Data
 @Builder
 @NoArgsConstructor

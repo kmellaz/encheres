@@ -6,7 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
+/**
+ * DTO pour l'entité Client (transmis par l'API).
+ *
+ * Contient les champs exposés aux consommateurs de l'API.
+ *
+ */
 @Data
 @Builder
 @NoArgsConstructor

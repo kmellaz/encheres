@@ -4,6 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
+/**
+ * Représente un client dans le système d'enchères.
+ *
+ * <p>Un client est une personne physique qui peut soumettre une ou plusieurs offres
+ * sur une enchère.
+ * Cette entité contient des informations qui peuvent l'identifier. </p>
+ */
 
 @Entity
 @Table(name = "client")

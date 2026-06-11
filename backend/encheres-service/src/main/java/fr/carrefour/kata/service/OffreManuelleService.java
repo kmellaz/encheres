@@ -12,7 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
+/**
+ * Service gérant les offres manuelles (soumission client).
+ *
+ * <p>Valide le dépôt d'une offre manuelle et met à jour l'enchère courante.
+ * Gère également la logique de surenchère automatique si l'enchère est de type automatique.</p>
+ *
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,15 +28,19 @@ public class OffreManuelleService {
     private final EnchereRepository enchereRepository;
     private final ClientRepository clientRepository;
 
-    /**
-     * Le client soumet une offre avec un montant pour une enchère donnée.
-     * si le type de l'enchere est automatique Le système surencherit automatiquement pour le client qui a configuré l'enchere
-     * en augmentant le montant d'un pas de 1 euro jusqu'à atteindre le maximum configuré
-     *
-     * @param clientId
-     * @param enchereId
-     * @param montant
-     */
+/**
+ * Dépose une offre manuelle pour une enchère donnée.
+ *
+ * <p>Vérifie l'existence du client et de l'enchère, la validité du montant,
+ * et met à jour le montant courant de l'enchère. Si l'enchère est de type
+ * automatique, déclenche la surenchère automatique.</p>
+ *
+ * @param clientId  identifiant du client déposant l'offre
+ * @param enchereId identifiant de l'enchère ciblée
+ * @param montant   montant proposé (doit être > montant courant)
+ * @throws fr.carrefour.kata.exception.FonctionelleException exceptions métiers (client/enchère non trouvés,
+ *         enchère inactive, montant insuffisant ou incorrect, etc.)
+ */
     public void deposerOffre(Long clientId, Long enchereId, BigDecimal montant) throws FonctionelleException {
         Client client = this.clientRepository.findById(clientId).orElseThrow(() -> new ObjetNonTrouveException("Client n'est pas trouvé id: " + clientId));
         Enchere enchere = this.enchereRepository.findById(enchereId).orElseThrow(() -> new ObjetNonTrouveException("Enchere n'est pas trouvée id: " + enchereId));
@@ -63,6 +73,16 @@ public class OffreManuelleService {
         }
     }
 
+/**
+ * Effectue une surenchère automatique sur une enchère configurée.
+ *
+ * <p>Recherche l'offre de configuration automatique (OffreAuto), calcule le nouveau montant
+ * et crée une OffreAuto supplémentaire si le montant max n'est pas atteint.
+ * Si le maximum est atteint, met l'enchère en statut FINISHED.</p>
+ *
+ * @param enchere enchère sur laquelle exécuter la surenchère
+ * @throws IllegalStateException si l'enchère n'est pas de type automatique ou si la configuration est absente
+ */
     private void surencherirAutomatiquement(Enchere enchere) {
         if (!TypeEnchere.AUTOMATIQUE.equals(enchere.getType())) {
             throw new IllegalStateException("l'enchère doit être de type automatique pour pouvoir surencherir automatiquement id: " + enchere.getId());

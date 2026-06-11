@@ -13,7 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
+/**
+ * Service pour la configuration d'offres automatiques par les clients.
+ *
+ * <p>Permet à un client de définir un plafond (montantMax) pour une enchère afin
+ * que le système place automatiquement des offres au besoin.</p>
+ *
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -23,13 +29,17 @@ public class OffreAutoService {
     private final ClientRepository clientRepository;
     private final EnchereRepository enchereRepository;
 
-    /**
-     * le client configure une offre automatique avec un montant maximum.
-     *
-     * @param clientId
-     * @param enchereId
-     * @param montantMax
-     */
+ /**
+  * Crée une offre automatique pour un client sur une enchère donnée.
+  *
+  * <p>Vérifie l'existence et l'état de l'enchère et la validité du montantMax.</p>
+  *
+  * @param clientId   identifiant du client créant l'offre automatique
+  * @param enchereId  identifiant de l'enchère
+  * @param montantMax plafond que le système pourra atteindre pour ce client
+  * @throws fr.carrefour.kata.exception.FonctionelleException exceptions métiers (client/enchère non trouvés,
+  *         enchère inactive, montant incorrect, etc.)
+  */
     public void creerOffre(Long clientId, Long enchereId, BigDecimal montantMax) throws FonctionelleException {
         Client client = this.clientRepository.findById(clientId).orElseThrow(() -> new ObjetNonTrouveException("Client n'est pas trouvé id: " + clientId));
         Enchere enchere = this.enchereRepository.findById(enchereId).orElseThrow(() -> new ObjetNonTrouveException("Enchere n'est pas trouvée id: " + enchereId));

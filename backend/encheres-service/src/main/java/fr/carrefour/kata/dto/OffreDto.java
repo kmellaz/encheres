@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
-
+/**
+ * DTO pour l'entité Offre.
+ *
+ */
 @Data
 @SuperBuilder
 @NoArgsConstructor
@@ -24,8 +27,8 @@ import java.time.LocalDateTime;
 })
 
 public abstract class OffreDto {
-    private Long id;
-    private LocalDateTime dateCreation;
-    private ClientDto client;
-    private EnchereDto enchere;
+    protected Long id;
+    protected LocalDateTime dateCreation;
+    protected ClientDto client;
+    protected EnchereDto enchere;
 }

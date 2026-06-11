@@ -1,5 +1,9 @@
 package fr.carrefour.kata.exception;
 
+/**
+ * Représente une exception métier.
+ * <p>L'exception centralise l'information sur le code de l'exception </p>
+ */
 public abstract class FonctionelleException extends RuntimeException {
 
     public static final int OBJET_NON_TROUVE_CODE = 100;
@@ -8,7 +12,7 @@ public abstract class FonctionelleException extends RuntimeException {
     public static final int MONTANT_ENCHERE_INSUFFISANT_CODE = 103;
     public static final int MONTANT_MAX_ENCHERE_ATTEINT_CODE = 104;
 
-    private final int code;
+    protected final int code;
 
 
     public FonctionelleException(int code, String message) {

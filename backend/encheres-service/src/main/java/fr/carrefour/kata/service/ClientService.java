@@ -11,17 +11,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-
+/**
+ * Service métier pour la gestion des clients.
+ *
+ * <p>Expose les opérations de lecture (DTO) pour l'API : récupération de la liste des clients
+ * avec leurs offres associées converties en DTO.</p>
+ *
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ClientService {
     private final ClientRepository clientRepository;
 
-    /**
-     * renvoie la liste des client du système
-     * @return
-     */
+   /**
+    * Récupère tous les clients du système et les mappe en {@link fr.carrefour.kata.dto.ClientDto}.
+    *
+    * @return liste de {@link fr.carrefour.kata.dto.ClientDto}, jamais null (peut être vide)
+    */
     public List<ClientDto> trouverClients() {
         return this.clientRepository.findAll().stream()
                 .map(client -> ClientDto.builder()

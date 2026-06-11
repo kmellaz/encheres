@@ -8,6 +8,10 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
+/**
+ * Représente une Offre automatique dans le système d'enchères.
+ * Une Offre automatique est soumise par le système au nom d'un client.
+ */
 @Data
 @SuperBuilder
 @NoArgsConstructor

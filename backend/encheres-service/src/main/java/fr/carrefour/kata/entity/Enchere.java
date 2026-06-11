@@ -8,6 +8,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Représente une Enchère dans le système d'enchères.
+ * <p>Une enchère contient des informations qui pemettent de l'identitfier.
+ * Une enchere peut contenir une ou plusieurs Offres clients</p>
+ *
+ */
 @Entity
 @Table(name = "enchere")
 @Data

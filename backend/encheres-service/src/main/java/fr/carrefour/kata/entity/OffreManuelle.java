@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+/**
+ * Représente une Offre manuelle dans le système d'enchères.
+ * Une Offre manuelle est soumise par un client.
+ */
 
 @Data
 @SuperBuilder

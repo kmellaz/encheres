@@ -16,7 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+/**
+ * Service métier pour les opérations liées aux enchères.
+ *
+ * <p>Fournit les cas d'usage en lecture et transformation des entités vers des DTO
+ * utilisables par les contrôleurs.</p>
+ *
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -24,12 +30,14 @@ public class EnchereService {
     private final EnchereRepository enchereRepository;
 
     /**
-     * retourne l'enchere correspondant à l'id donné en paramètre
-     * @param id
-     * @return
-     * @throws FonctionelleException si l'enchère n'existe pas
+     * Retourne une enchère identifiée par son id, convertie en {@link fr.carrefour.kata.dto.EnchereDto}.
+     *
+     * @param id l'identifiant de l'enchère recherchée (non null)
+     * @return l'objet {@link fr.carrefour.kata.dto.EnchereDto} correspondant
+     * @throws fr.carrefour.kata.exception.FonctionelleException si l'enchère n'existe pas
      */
-   public EnchereDto trouverEnchereParId(Long id) throws FonctionelleException {
+
+    public EnchereDto trouverEnchereParId(Long id) throws FonctionelleException {
         Enchere enchere = enchereRepository.findById(id)
                 .orElseThrow(() -> new ObjetNonTrouveException("Enchere est ontrouvable id: " + id));
         return EnchereDto.builder()
@@ -75,10 +83,12 @@ public class EnchereService {
                         }).toList()).build();
     }
 
-    /**
-     * renvoie une liste d’enchères actives
-     * @return
-     */
+   /**
+    * Récupère la liste des enchères qui sont actives (statut ACTIVE).
+    *
+    * @return liste non null (éventuellement vide) de {@link fr.carrefour.kata.dto.EnchereDto}
+    * @since 1.0
+    */
     public List<EnchereDto> trouverEncheresActives() {
         return enchereRepository.trouverEncheresActives(StatutEnchere.ACTIVE).stream()
                 .map(enchere -> EnchereDto.builder()
