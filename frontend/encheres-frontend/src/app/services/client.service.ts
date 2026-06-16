@@ -15,4 +15,9 @@ export class ClientService {
   getAll(endPoint: string): Observable<Client[]> {
     return this.http.get<Client[]>(this.baseUrl + endPoint);
   }
+
+  // Récupérer un client par son id
+  getById(endPoint: string, idClient: string): Observable<Client> {
+    return this.http.get<Client>(this.baseUrl + endPoint + '/' + idClient);
+  }
 }

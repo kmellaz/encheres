@@ -39,7 +39,7 @@ public class EnchereService {
 
     public EnchereDto trouverEnchereParId(Long id) throws FonctionelleException {
         Enchere enchere = enchereRepository.findById(id)
-                .orElseThrow(() -> new ObjetNonTrouveException("Enchere est ontrouvable id: " + id));
+                .orElseThrow(() -> new ObjetNonTrouveException("Enchere est introuvable id: " + id));
         return EnchereDto.builder()
                 .id(enchere.getId())
                 .description(enchere.getDescription())

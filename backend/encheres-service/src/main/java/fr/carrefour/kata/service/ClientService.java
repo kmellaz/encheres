@@ -4,8 +4,11 @@ import fr.carrefour.kata.dto.ClientDto;
 import fr.carrefour.kata.dto.EnchereDto;
 import fr.carrefour.kata.dto.OffreAutoDto;
 import fr.carrefour.kata.dto.OffreManuelleDto;
+import fr.carrefour.kata.entity.Client;
 import fr.carrefour.kata.entity.OffreAuto;
 import fr.carrefour.kata.entity.OffreManuelle;
+import fr.carrefour.kata.exception.FonctionelleException;
+import fr.carrefour.kata.exception.ObjetNonTrouveException;
 import fr.carrefour.kata.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -69,5 +72,20 @@ public class ClientService {
                         }).toList())
                         .build())
                 .toList();
+    }
+
+    /**
+     * Récupère le client par son ID, convertie en {@link fr.carrefour.kata.dto.ClientDto}.
+     * @param idClient
+     * @return
+     * @throws FonctionelleException
+     */
+    public ClientDto trouverClientParId(Long idClient) throws FonctionelleException {
+        Client client = this.clientRepository.findById(idClient).orElseThrow(() -> new ObjetNonTrouveException("le client est introuvable id: " + idClient));
+        return fr.carrefour.kata.dto.ClientDto.builder()
+                .id(client.getId())
+                .nom(client.getNom())
+                .prenom(client.getPrenom())
+                .email(client.getEmail()).build();
     }
 }

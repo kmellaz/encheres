@@ -137,6 +137,16 @@ public class TestControleurs {
 
     }
 
+    /**
+     * Tester la requete de consultation d'un client par son id
+     *
+     */
+    @Test
+    @Order(8)
+    public void testTrouverClientParId(){
+        this.webTestClient.get().uri(BASE_URL+"/clients/{id}", 1L).exchange().expectStatus().isOk();
+    }
+
 
 
 }
