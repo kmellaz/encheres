@@ -1,0 +1,12 @@
+/* layout.component.css */
+header img {
+  max-height: 3.5rem;
+  object-fit: contain;
+}
+nav a {
+  color: #333;
+  text-decoration: none;
+}
+nav a:hover {
+  text-decoration: underline;
+}

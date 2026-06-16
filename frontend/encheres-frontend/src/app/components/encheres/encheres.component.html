@@ -1,0 +1,78 @@
+@if (encheres$ | async; as encheres){
+<div class="container mt-3">
+  <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-3 gap-2">
+    <div>
+      <h2 class="h4 mb-0">Enchères </h2>
+      <small class="text-muted">Liste des enchères actives : {{ encheres.length }} </small>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button class="btn btn-sm btn-outline-secondary" (click)="goBack()">⬅ Retour</button>
+    </div>
+  </div>
+
+  <!-- Table pour écrans md et plus -->
+  <div class="table-responsive d-none d-md-block">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+      <tr>
+        <th style="min-width: 250px">Description</th>
+        <th style="width: 140px">Montant</th>
+        <th style="width: 110px">Type</th>
+        <th style="width: 160px">Temps restant</th>
+        <th style="width: 120px"></th>
+      </tr>
+      </thead>
+      <tbody>
+      @for (enchere of encheres; track enchere.id) {
+      <tr>
+        <td class="text-truncate" style="max-width: 420px;">{{ enchere.description }}</td>
+        <td><strong>{{ enchere.montantCourant | number:'1.2-2' }} €</strong></td>
+        <td><span class="badge bg-secondary">{{ enchere.type }}</span></td>
+        <td>{{ getTempsRestant(enchere.dateFin) }}</td>
+        <td>
+          <a [routerLink]="['/detailEnchere', enchere.id]" class="btn btn-sm btn-outline-primary">Voir</a>
+        </td>
+      </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Cartes pour petits écrans -->
+  <div class="d-block d-md-none">
+    @for (enchere of encheres; track enchere.id) {
+    <div class="card enchere-card mb-3 shadow-sm">
+      <div class="card-body p-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h5 class="card-title mb-0 text-truncate" title="{{ enchere.description }}">{{ enchere.description }}</h5>
+          <span class="badge bg-secondary">{{ enchere.type }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="small text-muted">Montant</div>
+          <div class="fw-bold">{{ enchere.montantCourant | number:'1.2-2' }} €</div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="small text-muted">Temps restant</div>
+          <div class="text-muted">{{ getTempsRestant(enchere.dateFin) }}</div>
+        </div>
+
+        <div class="mt-3 d-flex justify-content-between align-items-center">
+          <a [routerLink]="['/detailEnchere', enchere.id]" class="btn btn-sm btn-primary">Voir le détail</a>
+          <small class="text-muted">ID {{ enchere.id }}</small>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  @if (encheres.length === 0){
+  <div class="alert alert-info mt-3">
+    Aucune enchère active
+  </div>
+  }
+
+</div>
+}

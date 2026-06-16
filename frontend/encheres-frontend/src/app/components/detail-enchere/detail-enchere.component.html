@@ -1,0 +1,60 @@
+<div *ngIf="enchere$ | async as enchere" class="detail-container">
+  <!-- En-tête avec bouton retour -->
+  <div class="header">
+    <button class="btn-back" (click)="goBack()" title="Retour">
+      <span class="icon">⬅</span> Retour
+    </button>
+    <h1 class="title">Détail de l'enchère</h1>
+  </div>
+
+  <!-- Carte principale -->
+  <div class="card-detail">
+    <!-- Section Description -->
+    <div class="description-section">
+      <h2 class="section-title">Description</h2>
+      <p class="description-text">{{ enchere.description }}</p>
+    </div>
+
+    <!-- Grille des informations -->
+    <div class="info-grid">
+      <!-- Montant initial -->
+      <div class="info-card">
+        <div class="info-label">Montant initial</div>
+        <div class="info-value primary">
+          {{ enchere.montantInitial | currency:'EUR':'symbol':'1.2-2' }}
+        </div>
+      </div>
+
+      <!-- Montant courant -->
+      <div class="info-card">
+        <div class="info-label">Montant courant</div>
+        <div class="info-value highlight">
+          {{ enchere.montantCourant | currency:'EUR':'symbol':'1.2-2' }}
+        </div>
+      </div>
+
+      <!-- Type -->
+      <div class="info-card">
+        <div class="info-label">Type d'enchère</div>
+        <div class="info-value">
+          <span class="badge">{{ enchere.type }}</span>
+        </div>
+      </div>
+
+      <!-- Date fin -->
+      <div class="info-card">
+        <div class="info-label">Date de fin</div>
+        <div class="info-value">
+          {{ enchere.dateFin | date : 'dd/MM/yyyy à HH:mm' }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Pied de page -->
+    <div class="footer">
+      <button class="btn btn-secondary" (click)="goBack()">
+        ⬅ Retour aux enchères
+      </button>
+    </div>
+  </div>
+</div>
