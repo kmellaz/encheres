@@ -1,5 +1,6 @@
 package fr.carrefour.kata.service;
 
+import fr.carrefour.kata.dto.EnchereDto;
 import fr.carrefour.kata.entity.*;
 import fr.carrefour.kata.enums.StatutEnchere;
 import fr.carrefour.kata.enums.TypeEnchere;
@@ -40,7 +41,7 @@ public class OffreAutoService {
   * @throws fr.carrefour.kata.exception.FonctionelleException exceptions métiers (client/enchère non trouvés,
   *         enchère inactive, montant incorrect, etc.)
   */
-    public void creerOffre(Long clientId, Long enchereId, BigDecimal montantMax) throws FonctionelleException {
+    public EnchereDto creerOffre(Long clientId, Long enchereId, BigDecimal montantMax) throws FonctionelleException {
         Client client = this.clientRepository.findById(clientId).orElseThrow(() -> new ObjetNonTrouveException("Client n'est pas trouvé id: " + clientId));
         Enchere enchere = this.enchereRepository.findById(enchereId).orElseThrow(() -> new ObjetNonTrouveException("Enchere n'est pas trouvée id: " + enchereId));
 
@@ -65,6 +66,15 @@ public class OffreAutoService {
         this.offreRepository.save(offre);
         enchere.setType(TypeEnchere.AUTOMATIQUE); // on passe le type de l'enchère à AUTO dès qu'une offre auto est créée
 
-
+    return EnchereDto.builder()
+                .id(enchere.getId())
+                .description(enchere.getDescription())
+                .montantInitial(enchere.getMontantInitial())
+                .montantCourant(enchere.getMontantCourant())
+                .dateDebut(enchere.getDateDebut())
+                .dateFin(enchere.getDateFin())
+                .statut(enchere.getStatut())
+                .type(enchere.getType())
+                .build();
     }
 }

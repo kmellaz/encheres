@@ -1,10 +1,13 @@
 package fr.carrefour.kata.controler;
 
+import fr.carrefour.kata.dto.EnchereDto;
 import fr.carrefour.kata.request.OffreRequest;
 import fr.carrefour.kata.service.OffreAutoService;
 import fr.carrefour.kata.service.OffreManuelleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,23 +30,26 @@ public class OffreControleur {
     private final OffreManuelleService offreManuelleService;
 
     /**
-     * Déclenche la création d'une offre automatique.
+     * Création d'une offre automatique via POST.
      *
      * @param request corps de la requête contenant clientId, enchereId et montant
+     * @return ResponseEntity contenant enchereDto {@link fr.carrefour.kata.dto.EnchereDto}
      */
     @PostMapping("/auto")
-    public void creerOffreAuto(@Valid @RequestBody OffreRequest request) {
-        this.offreAutoService.creerOffre(request.clientId(), request.enchereId(), request.montant());
+    public ResponseEntity<EnchereDto> creerOffreAuto(@Valid @RequestBody OffreRequest request) {
+        EnchereDto enchereDto =  this.offreAutoService.creerOffre(request.clientId(), request.enchereId(), request.montant());
+        return  ResponseEntity.status(HttpStatus.OK).body(enchereDto);
     }
 
     /**
      * Dépose une offre manuelle via POST.
      *
      * @param request corps de la requête contenant clientId, enchereId et montant
-     * @since 1.0
+     * @return ResponseEntity contenant enchereDto {@link fr.carrefour.kata.dto.EnchereDto}
      */
     @PostMapping("/manuelle")
-    public void deposerOffreManuelle(@Valid @RequestBody OffreRequest request) {
-        this.offreManuelleService.deposerOffre(request.clientId(), request.enchereId(), request.montant());
+    public ResponseEntity<EnchereDto> deposerOffreManuelle(@Valid @RequestBody OffreRequest request) {
+        EnchereDto enchereDto = this.offreManuelleService.deposerOffre(request.clientId(), request.enchereId(), request.montant());
+        return ResponseEntity.status(HttpStatus.OK).body(enchereDto);
     }
 }
