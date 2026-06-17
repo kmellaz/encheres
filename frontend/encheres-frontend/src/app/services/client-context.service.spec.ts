@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SendClientIdService } from './send-client-id.service';
+import { ClientContextService } from './client-context.service';
 
-describe('SendClientIdService', () => {
-  let service: SendClientIdService;
+describe('ClientContextService', () => {
+  let service: ClientContextService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SendClientIdService);
+    service = TestBed.inject(ClientContextService);
   });
 
   it('should be created', () => {

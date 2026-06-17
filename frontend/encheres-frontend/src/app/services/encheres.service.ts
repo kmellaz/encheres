@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Client} from '../models/client';
 import {Enchere} from '../models/enchere';
+import {OffreRequest} from '../models/offre-request';
 
 @Injectable({
   providedIn: 'root',
@@ -21,4 +21,11 @@ export class EncheresService {
   getById(endPoint: string, idEnchere: string): Observable<Enchere> {
     return this.http.get<Enchere>(this.baseUrl + endPoint + '/' + idEnchere);
   }
+
+  //soumettre une offre
+  deposerOffre(endPoint: string, offre: OffreRequest):Observable<Enchere> {
+    console.log("Url post offre : ", this.baseUrl + endPoint);
+    return this.http.post<Enchere>(this.baseUrl + endPoint, offre);
+  }
+
 }

@@ -1,0 +1,60 @@
+<div class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        @if(isManuelle()){
+        <h5 class="modal-title">Saisie du montant de l'offre</h5>
+        }
+
+        @if(isAutomatique()){
+        <h5 class="modal-title">Saisie du montant maximum</h5>
+        }
+        <button type="button"
+                class="btn-close"
+                (click)="annuler()">
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            @if(isManuelle()){
+            <label class="form-label">
+              Montant
+            </label>
+            }
+
+            @if(isAutomatique()){
+            <label class="form-label">
+              Montant maximum
+            </label>
+            }
+          </div>
+
+          <div class="col">
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="montant">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary"
+                (click)="annuler()">
+          Annuler
+        </button>
+
+        <button class="btn btn-primary"
+                (click)="valider()">
+          Valider
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop fade show"></div>

@@ -16,7 +16,12 @@
 
       <div class="text-end small text-muted">
         <div>Bienvenue — {{ today | date:'dd/MM/yyyy' }}</div>
-        <div>Client : {{ clientId }}</div>
+        @if (clientContext.clientSelectionne()) {
+        <div>
+          {{ clientContext.clientSelectionne()?.nom }} {{ clientContext.clientSelectionne()?.prenom }}
+        </div>
+        }
+
       </div>
     </div>
   </div>

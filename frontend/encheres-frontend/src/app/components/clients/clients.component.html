@@ -4,13 +4,15 @@
       <label for="client" style="float: right;">Client connecté :</label>
     </div>
     <div class="col-md-3">
-      <select *ngIf="clients$ | async as clients" id="client" class="form-select" [(ngModel)]="selectedClientId" name="client"
-              (ngModelChange)="goToEncheres()">
-        <option value="0">Sélectionner un client : </option>
-        <option *ngFor="let client of clients" [value]="client.id">
+      <select *ngIf="clients$ | async as clients" id="client" class="form-select"
+              [(ngModel)]="selectedClient" name="client"
+              (ngModelChange)="onClientChange($event)">
+        <option [ngValue]="null" disabled>Sélectionner un client</option>
+        <option *ngFor="let client of clients" [ngValue]="client">
           {{ client.nom }} {{ client.prenom }}
         </option>
       </select>
+
     </div>
   </div>
 </div>

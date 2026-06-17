@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Router, RouterModule} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {Enchere} from '../../models/enchere';
 import {EncheresService} from '../../services/encheres.service';
 import {CommonModule, Location} from '@angular/common';
-import {SendClientIdService} from '../../services/send-client-id.service';
+import {ClientContextService} from '../../services/client-context.service';
 
 @Component({
   selector: 'app-encheres',
@@ -14,17 +14,16 @@ import {SendClientIdService} from '../../services/send-client-id.service';
 })
 export class EncheresComponent {
   encheres$!: Observable<Enchere[]>;
-  clientId: string | null = null ;
 
   constructor(private enchereService : EncheresService,
-              private router: Router,
-              private sendClientIdService: SendClientIdService,
+              private clientContext: ClientContextService,
               private location: Location) {
     console.info('constructor EncheresComponent');
   }
 
   ngOnInit(): void {
-    console.info('ngOnInit');
+    console.info('ngOnInit dans EncheresComponent');
+    console.info('client connecté : ' + this.clientContext.clientSelectionne()?.nom + ' ' + this.clientContext.clientSelectionne()?.prenom);
     this.loadEncheres();
   }
 
@@ -32,11 +31,6 @@ export class EncheresComponent {
     this.encheres$ = this.enchereService.getAll('');
   }
 
-  getClientId(): void {
-    this.sendClientIdService.client$.subscribe(c => {
-      this.clientId = c;
-    });
-  }
 
   getTempsRestant(dateFin: Date | string): string {
     const fin =

@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Client} from '../../models/client';
 import {ClientService} from '../../services/client.service';
 import {Router} from '@angular/router';
-import {SendClientIdService} from '../../services/send-client-id.service';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {ClientContextService} from '../../services/client-context.service';
 
 @Component({
   selector: 'app-clients',
@@ -15,10 +15,10 @@ import {FormsModule} from '@angular/forms';
 })
 export class ClientsComponent {
   clients$!: Observable<Client[]>;
-  selectedClientId: string | undefined ;
+  selectedClient: Client | null = null ;
 
   constructor(private clientService : ClientService,
-              private sendClientIdService: SendClientIdService,
+              private clientContext: ClientContextService,
               private router: Router) {
     console.info('constructor Clients');
   }
@@ -32,12 +32,10 @@ export class ClientsComponent {
     this.clients$ = this.clientService.getAll('');
   }
 
-  goToEncheres(): void {
-    if (this.selectedClientId) {
-      this.sendClientIdService.setClient(this.selectedClientId);
-
-      this.router.navigate(['/encheres']);
-      console.info('Navigating to api/encheres for client ID: ' + this.selectedClientId);
-    }
+  onClientChange(client: Client): void {
+    this.selectedClient = client;
+    this.clientContext.setClient(client);
+    console.log('client changed : ' + JSON.stringify(client));
+    this.router.navigate(['/encheres']);
   }
 }

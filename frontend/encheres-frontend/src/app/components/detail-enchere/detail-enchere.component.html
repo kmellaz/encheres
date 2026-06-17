@@ -1,4 +1,4 @@
-<div *ngIf="enchere$ | async as enchere" class="detail-container">
+<div *ngIf="enchere() as enchere" class="detail-container">
   <!-- En-tête avec bouton retour -->
   <div class="header">
     <button class="btn-back" (click)="goBack()" title="Retour">
@@ -7,9 +7,13 @@
     <h1 class="title">Détail de l'enchère</h1>
   </div>
 
+  <div *ngIf="msgError()" class="msg-error alert alert-danger" role="alert" aria-live="assertive">
+    {{ msgError() }}
+  </div>
+
   <!-- Carte principale -->
   <div class="card-detail">
-    <!-- Section Description -->
+      <!-- Section Description -->
     <div class="description-section">
       <h2 class="section-title">Description</h2>
       <p class="description-text">{{ enchere.description }}</p>
@@ -51,10 +55,34 @@
     </div>
 
     <!-- Pied de page -->
-    <div class="footer">
-      <button class="btn btn-secondary" (click)="goBack()">
+    <div class="footer d-flex justify-content-end gap-2 flex-wrap">
+
+      <!-- Bouton surenchérir -->
+      <button class="btn btn-primary" (click)="surencherir()" title="Faire une surenchère">
+        Surenchérir
+      </button>
+
+      <!-- Bouton auto-enchère: affiche état ON/OFF -->
+      <button
+        class="btn btn-primary"
+        (click)="autoEnchere()"
+        title="Faire une auto-enchère">
+        Auto-enchère
+      </button>
+
+      <button class="btn btn-primary" (click)="goBack()">
         ⬅ Retour aux enchères
       </button>
     </div>
   </div>
+
+  <!-- popop de saisie de montant d'une offre d'enchère -->
+  <app-offre-montant
+    *ngIf="afficherModal"
+    [typeEnchere]= "typeEnchereToDo"
+    (fermer) = "fermerModal()"
+    (validerMontant) = "traiterOffre($event)">
+
+  </app-offre-montant>
+
 </div>
