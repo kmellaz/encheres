@@ -28,13 +28,13 @@ public class EnchereControleur {
     private final EnchereService enchereService;
 
     /**
-     * Endpoint GET pour récupérer les enchères actives.
+     * Endpoint GET pour récupérer toutes les enchères.
      *
      * @return ResponseEntity contenant la liste des {@link fr.carrefour.kata.dto.EnchereDto}
      */
     @GetMapping
-    public ResponseEntity<List<EnchereDto>> trouverEncheresActives() {
-        return ResponseEntity.status(HttpStatus.OK).body(enchereService.trouverEncheresActives());
+    public ResponseEntity<List<EnchereDto>> trouverEncheres() {
+        return ResponseEntity.status(HttpStatus.OK).body(enchereService.trouverEncheres());
     }
 
     /**

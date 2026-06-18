@@ -52,18 +52,30 @@
           {{ enchere.dateFin | date : 'dd/MM/yyyy à HH:mm' }}
         </div>
       </div>
+
+      <!-- Statut -->
+      <div class="info-card">
+        <div class="info-label">Statut</div>
+        <div class="info-value">
+          <span class="badge">{{ enchere.statut }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- Pied de page -->
     <div class="footer d-flex justify-content-end gap-2 flex-wrap">
 
       <!-- Bouton surenchérir -->
-      <button class="btn btn-primary" (click)="surencherir()" title="Faire une surenchère">
+      <button *ngIf="enchere.statut==='ACTIVE'"
+              class="btn btn-primary"
+              (click)="surencherir()"
+              title="Faire une surenchère">
         Surenchérir
       </button>
 
-      <!-- Bouton auto-enchère: affiche état ON/OFF -->
+      <!-- Bouton auto-enchère -->
       <button
+        *ngIf="enchere.statut==='ACTIVE'"
         class="btn btn-primary"
         (click)="autoEnchere()"
         title="Faire une auto-enchère">

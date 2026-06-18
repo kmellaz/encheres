@@ -20,6 +20,7 @@
         <th style="width: 140px">Montant</th>
         <th style="width: 110px">Type</th>
         <th style="width: 160px">Temps restant</th>
+        <th style="width: 110px">Statut</th>
         <th style="width: 120px"></th>
       </tr>
       </thead>
@@ -30,6 +31,7 @@
         <td><strong>{{ enchere.montantCourant | number:'1.2-2' }} €</strong></td>
         <td><span class="badge bg-secondary">{{ enchere.type }}</span></td>
         <td>{{ getTempsRestant(enchere.dateFin) }}</td>
+        <td><span class="badge bg-secondary">{{ enchere.statut }}</span></td>
         <td>
           <a [routerLink]="['/detailEnchere', enchere.id]" class="btn btn-sm btn-outline-primary">Voir</a>
         </td>

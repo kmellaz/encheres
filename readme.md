@@ -60,12 +60,12 @@
 4. Si le montant de l’offre automatique atteint le montant maximum, le système arrête de surenchérir pour ce client.
 
 # 4. Le Front Angular :
-1. Écran qui liste les enchères actives du système.
+1. Écran qui liste les enchères (active/finie) enregistrées dans le système.
 
    **ACTIONS**: voir détail d’une enchère <br>
    **ROUTE**: /encheres <br>
 
-2. Écran de détail d’une enchère (description, montant actuel, temps restant,  historique des offres).<br>
+2. Écran de détail d’une enchère (description, montant initial, montant actuel, type de l'enchère, date de fin, statut).<br>
    **ACTIONS**: surenchérir, configurer auto-enchere, quitter <br>
    **ROUTE**: /encheres/:id <br>
 
@@ -75,14 +75,14 @@
 4. Popup de configuration d’une enchere automatique : pour saisie du montant maximal.<br>
    **ACTIONS**: enregistrer, quitter<br>
 
-5. Pour simuler un écran de connexion, j'ajoute un combobox qui liste les clients existants, le client sélectionné dans le combo box est considéré comme connecté.
-   **ACTIONS**: séléctionner un client dans le combobox<br>
+5. Pour simuler l'action du client qui se connecte à l'application, une liste de clients existants sera proposée, le client sélectionné est considéré comme authentifié et connecté à l'application.<br>
+   **ACTIONS**: séléctionner un client dans la liste déroulante<br>
 
 # 5 . Instructions de lancement du projet :
 pour lancer l'application des enchères, suivez les étapes ci-dessous :
 - lancer le backend (déploiment de l'api REST): application spring boot :  java -jar target/encheres-service-0.0.1-SNAPSHOT.jar
-    l'initialisation la base de données sera faite dans cette étape via spring boot qui configure une base de données en mémoire de type H2.
-    et des données de test (clients, liste des enchères actives) seront insérées dans la base de données au démarrage de l'application.
+    l'initialisation de la base de données sera faite dans cette étape via spring boot qui configure une base de données en mémoire de type H2.
+    les données de test (clients, liste des enchères actives) seront insérées dans la base de données au démarrage de l'application.
 - lancer le frontend : application angular : npm start
 - accéder à l'application : http://localhost:4200/encheres
 - accéder à la documentation de l'api REST : http://localhost:8080/swagger-ui/index.html

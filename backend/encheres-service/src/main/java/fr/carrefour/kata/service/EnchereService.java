@@ -12,6 +12,7 @@ import fr.carrefour.kata.exception.FonctionelleException;
 import fr.carrefour.kata.exception.ObjetNonTrouveException;
 import fr.carrefour.kata.repository.EnchereRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,4 +103,20 @@ public class EnchereService {
                         .type(enchere.getType()).build())
                 .toList();
     }
+
+    public List<EnchereDto> trouverEncheres() {
+        return enchereRepository.findAll().stream()
+                .map(enchere -> EnchereDto.builder()
+                        .id(enchere.getId())
+                        .description(enchere.getDescription())
+                        .dateDebut(enchere.getDateDebut())
+                        .dateFin(enchere.getDateFin())
+                        .montantInitial(enchere.getMontantInitial())
+                        .montantCourant(enchere.getMontantCourant())
+                        .statut(enchere.getStatut())
+                        .type(enchere.getType()).build())
+                .toList();
+    }
+
+
 }
