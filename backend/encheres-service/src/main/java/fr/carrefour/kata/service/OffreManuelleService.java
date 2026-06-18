@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
+
 public class OffreManuelleService {
 
     private final OffreRepository offreRepository;
@@ -42,6 +42,7 @@ public class OffreManuelleService {
  * @throws fr.carrefour.kata.exception.FonctionelleException exceptions métiers (client/enchère non trouvés,
  *         enchère inactive, montant insuffisant ou incorrect, etc.)
  */
+    @Transactional(noRollbackFor = MaxEnchereAtteintException.class)
     public EnchereDto deposerOffre(Long clientId, Long enchereId, BigDecimal montant) throws FonctionelleException {
         Client client = this.clientRepository.findById(clientId).orElseThrow(() -> new ObjetNonTrouveException("Client n'est pas trouvé id: " + clientId));
         Enchere enchere = this.enchereRepository.findById(enchereId).orElseThrow(() -> new ObjetNonTrouveException("Enchere n'est pas trouvée id: " + enchereId));
@@ -56,6 +57,18 @@ public class OffreManuelleService {
         }
         if (montant.compareTo(enchere.getMontantCourant()) <= 0) {
             throw new MontantEnchereInsuffisant(montant, enchere.getMontantCourant(), "Le montant doit être supérieur au montant courant de l'enchère : > " + enchere.getMontantCourant());
+        }
+
+        if (TypeEnchere.AUTOMATIQUE.equals(enchere.getType()) ) {
+            // récuperer l'offre de configuration de l'enchère auto
+            Offre offreAuto = enchere.getOffres().stream()
+                    .filter(o -> o instanceof OffreAuto)
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("Il n'y a pas d'offre automatique configurée pour cette enchère id: " + enchere.getId()));
+            BigDecimal montantMax = ((OffreAuto)offreAuto).getMontantMax();
+            if (montant.compareTo(montantMax) > 0) {
+                throw new MaxEnchereAtteintException("Le montant ne peut être supérieur au montant maximum défini : " + montant + " > " + montantMax);
+            }
         }
 
         Offre offre = OffreManuelle.builder()
@@ -94,8 +107,9 @@ public class OffreManuelleService {
  *
  * @param enchere enchère sur laquelle exécuter la surenchère
  * @throws IllegalStateException si l'enchère n'est pas de type automatique ou si la configuration est absente
+ * FonctionelleException si le montant maximum de l'enchère automatique a été atteint
  */
-    private void surencherirAutomatiquement(Enchere enchere) {
+    private void surencherirAutomatiquement(Enchere enchere) throws FonctionelleException {
         if (!TypeEnchere.AUTOMATIQUE.equals(enchere.getType())) {
             throw new IllegalStateException("l'enchère doit être de type automatique pour pouvoir surencherir automatiquement id: " + enchere.getId());
         }
@@ -110,7 +124,7 @@ public class OffreManuelleService {
         BigDecimal montantMax = ((OffreAuto)offreAuto).getMontantMax();
         BigDecimal montantAuto = enchere.getMontantCourant().add(BigDecimal.ONE);
 
-        if (montantMax.compareTo(montantAuto) > 0) {
+        if (montantMax.compareTo(montantAuto) >= 0) {
             Offre nouvelleOffreAuto = OffreAuto.builder()
                     .client(client)
                     .enchere(enchere)
@@ -119,12 +133,13 @@ public class OffreManuelleService {
                     .build();
             this.offreRepository.save(nouvelleOffreAuto);
             enchere.setMontantCourant(montantAuto);
+            if (montantMax.compareTo(montantAuto) == 0) {
+                enchere.setStatut(StatutEnchere.FINISHED);
+            }
 
         } else {
             enchere.setStatut(StatutEnchere.FINISHED);
             throw new MaxEnchereAtteintException("Le montant maximum de l'enchère automatique a été atteint : " + montantMax);
         }
-
-
     }
 }
