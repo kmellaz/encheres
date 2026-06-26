@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
+
 public class EnchereService {
     private final EnchereRepository enchereRepository;
 
@@ -37,7 +37,7 @@ public class EnchereService {
      * @return l'objet {@link fr.carrefour.kata.dto.EnchereDto} correspondant
      * @throws fr.carrefour.kata.exception.FonctionelleException si l'enchère n'existe pas
      */
-
+    @Transactional(readOnly = true)
     public EnchereDto trouverEnchereParId(Long id) throws FonctionelleException {
         Enchere enchere = enchereRepository.findById(id)
                 .orElseThrow(() -> new ObjetNonTrouveException("Enchere est introuvable id: " + id));
@@ -50,6 +50,7 @@ public class EnchereService {
                 .montantCourant(enchere.getMontantCourant())
                 .statut(enchere.getStatut())
                 .type(enchere.getType())
+                .version(enchere.getVersion())
                 .offres(enchere.getOffres().stream().map(offre ->
                         {
                             if (offre instanceof OffreManuelle offreManuelle) {
@@ -90,6 +91,7 @@ public class EnchereService {
     * @return liste non null (éventuellement vide) de {@link fr.carrefour.kata.dto.EnchereDto}
     * @since 1.0
     */
+   @Transactional(readOnly = true)
     public List<EnchereDto> trouverEncheresActives() {
         return enchereRepository.trouverEncheresActives(StatutEnchere.ACTIVE).stream()
                 .map(enchere -> EnchereDto.builder()
@@ -100,10 +102,17 @@ public class EnchereService {
                         .montantInitial(enchere.getMontantInitial())
                         .montantCourant(enchere.getMontantCourant())
                         .statut(enchere.getStatut())
-                        .type(enchere.getType()).build())
+                        .type(enchere.getType())
+                        .version(enchere.getVersion()).build())
                 .toList();
     }
 
+    /**
+     * Récupère la liste des enchères du SI.
+     *
+     * @return liste non null (éventuellement vide) de {@link fr.carrefour.kata.dto.EnchereDto}
+     */
+    @Transactional(readOnly = true)
     public List<EnchereDto> trouverEncheres() {
         return enchereRepository.findAll().stream()
                 .map(enchere -> EnchereDto.builder()
@@ -114,7 +123,8 @@ public class EnchereService {
                         .montantInitial(enchere.getMontantInitial())
                         .montantCourant(enchere.getMontantCourant())
                         .statut(enchere.getStatut())
-                        .type(enchere.getType()).build())
+                        .type(enchere.getType())
+                        .version(enchere.getVersion()).build())
                 .toList();
     }
 

@@ -8,6 +8,7 @@ import fr.carrefour.kata.exception.*;
 import fr.carrefour.kata.repository.ClientRepository;
 import fr.carrefour.kata.repository.EnchereRepository;
 import fr.carrefour.kata.repository.OffreRepository;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,11 +50,11 @@ public class OffreManuelleService {
 
         if (StatutEnchere.FINISHED.equals(enchere.getStatut())
             || enchere.getDateFin().isBefore(LocalDateTime.now())) {
-            throw new EnchereInactiveException("Enchere est inactive id: " + enchereId);
+            throw new EnchereInactiveException("L'enchère est finie.");
         }
 
         if (montant == null || montant.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new MontantIncorrectException("Le montant doit être supérieur à zéro id: " + enchereId);
+            throw new MontantIncorrectException("Le montant doit être supérieur à zéro ");
         }
         if (montant.compareTo(enchere.getMontantCourant()) <= 0) {
             throw new MontantEnchereInsuffisant(montant, enchere.getMontantCourant(), "Le montant doit être supérieur au montant courant de l'enchère : > " + enchere.getMontantCourant());
@@ -78,8 +79,12 @@ public class OffreManuelleService {
                 .dateCreation(LocalDateTime.now())
                 .build();
 
-        this.offreRepository.save(offre);
-        enchere.setMontantCourant(montant);
+        try {
+            this.offreRepository.save(offre);
+            enchere.setMontantCourant(montant);
+        } catch(OptimisticLockException ole){
+            throw new AccesConcurrentException("Le montant de l'enchère a été modifié par un autre client, veuiller relire les informations de l'enchère et proposer un autre montant.");
+        }
 
 
         if (TypeEnchere.AUTOMATIQUE.equals(enchere.getType())) {
@@ -131,11 +136,17 @@ public class OffreManuelleService {
                     .montantAuto(montantAuto)
                     .dateCreation(LocalDateTime.now())
                     .build();
-            this.offreRepository.save(nouvelleOffreAuto);
-            enchere.setMontantCourant(montantAuto);
-            if (montantMax.compareTo(montantAuto) == 0) {
-                enchere.setStatut(StatutEnchere.FINISHED);
+            try {
+                this.offreRepository.save(nouvelleOffreAuto);
+                //Dirty Checking.
+                enchere.setMontantCourant(montantAuto);
+                if (montantMax.compareTo(montantAuto) == 0) {
+                    enchere.setStatut(StatutEnchere.FINISHED);
+                }
+            } catch(OptimisticLockException ole){
+                throw new AccesConcurrentException("Le montant de l'enchère a été modifié par un autre client, veuiller relire les informations de l'enchère et proposer un autre montant.");
             }
+
 
         } else {
             enchere.setStatut(StatutEnchere.FINISHED);

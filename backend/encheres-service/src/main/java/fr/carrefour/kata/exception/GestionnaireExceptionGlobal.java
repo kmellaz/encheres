@@ -122,6 +122,27 @@ public class GestionnaireExceptionGlobal {
     }
 
     /**
+     * Gère l'exception levée lorsqu'on a un accès concurrentiel sur une enchère
+     *
+     * @param ex exception {@link AccesConcurrentException} capturée
+     * @return ResponseEntity avec statut HTTP 409 CONFLICT et détails de l'erreur
+     * @since 1.0
+     */
+
+    @ExceptionHandler(AccesConcurrentException.class)
+    public ResponseEntity<ApiEncheresError> gererAccesConcurrentException(AccesConcurrentException ex) {
+        ApiEncheresError error = new ApiEncheresError(
+                Instant.now(),
+                HttpStatus.CONFLICT.value(),
+                "CONFLICT",
+                ex.getMessage(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(error);
+    }
+
+    /**
      * Gère les erreurs de validation des arguments de requête.
      *
      * <p>Capture les violations de contraintes (ex. @NotNull, @Valid) et retourne
@@ -149,10 +170,12 @@ public class GestionnaireExceptionGlobal {
                 Instant.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "ERREUR_VALIDATION",
-                "Erreur de validation des arguments de la methode",
+                "Erreur de validation des arguments de la méthode",
                 fieldErrors
         );
 
         return ResponseEntity.badRequest().body(error);
     }
+
+
 }

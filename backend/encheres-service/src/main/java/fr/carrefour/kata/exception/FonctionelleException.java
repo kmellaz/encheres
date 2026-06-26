@@ -11,6 +11,7 @@ public abstract class FonctionelleException extends RuntimeException {
     public static final int MONTANT_ENCHERE_INCORRECT_CODE = 102;
     public static final int MONTANT_ENCHERE_INSUFFISANT_CODE = 103;
     public static final int MONTANT_MAX_ENCHERE_ATTEINT_CODE = 104;
+    public static final int ACCES_CONCURRENT_ENCHERE_CODE = 105;
 
     protected final int code;
 

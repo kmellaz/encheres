@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-@Transactional
+
 public class ClientService {
     private final ClientRepository clientRepository;
 
@@ -32,6 +32,7 @@ public class ClientService {
     *
     * @return liste de {@link fr.carrefour.kata.dto.ClientDto}, jamais null (peut être vide)
     */
+   @Transactional(readOnly = true)
     public List<ClientDto> trouverClients() {
         return this.clientRepository.findAll().stream()
                 .map(client -> ClientDto.builder()
@@ -80,6 +81,7 @@ public class ClientService {
      * @return
      * @throws FonctionelleException
      */
+    @Transactional(readOnly = true)
     public ClientDto trouverClientParId(Long idClient) throws FonctionelleException {
         Client client = this.clientRepository.findById(idClient).orElseThrow(() -> new ObjetNonTrouveException("le client est introuvable id: " + idClient));
         return fr.carrefour.kata.dto.ClientDto.builder()

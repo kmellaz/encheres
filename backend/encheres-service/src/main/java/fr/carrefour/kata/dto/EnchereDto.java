@@ -33,4 +33,5 @@ public class EnchereDto {
     private StatutEnchere statut;
     private TypeEnchere type;
     private List<OffreDto> offres;
+    private Long version;
 }

@@ -34,4 +34,7 @@ public class Enchere {
 
     @OneToMany(mappedBy = "enchere", cascade = CascadeType.ALL)
     private List<Offre> offres;
+
+    @Version
+    private Long version;
 }
