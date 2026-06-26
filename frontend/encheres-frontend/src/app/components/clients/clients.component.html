@@ -4,7 +4,7 @@
       <label for="client" style="float: right;">Client connecté :</label>
     </div>
     <div class="col-md-3">
-      <select *ngIf="clients$ | async as clients" id="client" class="form-select"
+      <select *ngIf="clients() as clients" id="client" class="form-select"
               [(ngModel)]="selectedClient" name="client"
               (ngModelChange)="onClientChange($event)">
         <option [ngValue]="null" disabled>Sélectionner un client</option>

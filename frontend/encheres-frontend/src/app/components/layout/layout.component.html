@@ -10,17 +10,16 @@
       </div>
 
       <nav class="mb-2 mb-md-0">
-        <a routerLink="" class="me-2">Home</a>
-        <a routerLink="encheres" class="me-2">Enchères</a>
+        <a routerLink="" >Home</a>
+        <span class="text-muted mx-2">|</span>
+        <a routerLink="encheres" >Enchères</a>
       </nav>
 
       <div class="text-end small text-muted">
         <div>Bienvenue — {{ today | date:'dd/MM/yyyy' }}</div>
-        @if (clientContext.clientSelectionne()) {
-        <div>
-          {{ clientContext.clientSelectionne()?.nom }} {{ clientContext.clientSelectionne()?.prenom }}
+        <div *ngIf="clientContext.clientSelectionne() as client">
+          {{ client.nom }} {{ client.prenom }}
         </div>
-        }
 
       </div>
     </div>

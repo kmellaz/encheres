@@ -1,12 +1,12 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal} from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
-import {DatePipe} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {ClientContextService} from '../../services/client-context.service';
 
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, RouterLink, DatePipe],
+  imports: [CommonModule, RouterOutlet, RouterLink, DatePipe],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })
@@ -19,6 +19,7 @@ export class LayoutComponent {
   }
 
 ngOnInit() {
+  console.info('dans ngOnInit() LayoutComponent ' );
 }
 
 }

@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component, inject, signal} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {Enchere} from '../../models/enchere';
 import {EncheresService} from '../../services/encheres.service';
@@ -13,10 +12,16 @@ import {ClientContextService} from '../../services/client-context.service';
   styleUrl: './encheres.component.css',
 })
 export class EncheresComponent {
-  encheres$!: Observable<Enchere[]>;
+  clientContext= inject(ClientContextService);
+
+  private _encheres = signal<Enchere[]>([]);
+  encheres = this._encheres.asReadonly();
+
+  loadEncheres() {
+    this.enchereService.getAll("").subscribe(encheres => this._encheres.set(encheres));
+  }
 
   constructor(private enchereService : EncheresService,
-              private clientContext: ClientContextService,
               private location: Location) {
     console.info('constructor EncheresComponent');
   }
@@ -26,11 +31,6 @@ export class EncheresComponent {
     console.info('client connecté : ' + this.clientContext.clientSelectionne()?.nom + ' ' + this.clientContext.clientSelectionne()?.prenom);
     this.loadEncheres();
   }
-
-  loadEncheres(): void {
-    this.encheres$ = this.enchereService.getAll('');
-  }
-
 
   getTempsRestant(dateFin: Date | string): string {
     const fin =

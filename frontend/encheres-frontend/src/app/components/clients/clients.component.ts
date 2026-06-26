@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component, signal} from '@angular/core';
 import {Client} from '../../models/client';
 import {ClientService} from '../../services/client.service';
 import {Router} from '@angular/router';
@@ -14,13 +13,15 @@ import {ClientContextService} from '../../services/client-context.service';
   styleUrl: './clients.component.css',
 })
 export class ClientsComponent {
-  clients$!: Observable<Client[]>;
+  _clients = signal<Client[]>([]);
+  readonly clients = this._clients.asReadonly();
   selectedClient: Client | null = null ;
 
   constructor(private clientService : ClientService,
               private clientContext: ClientContextService,
               private router: Router) {
     console.info('constructor Clients');
+    this.clientContext.clear();
   }
 
   ngOnInit(): void {
@@ -29,13 +30,12 @@ export class ClientsComponent {
   }
 
   loadClients(): void {
-    this.clients$ = this.clientService.getAll('');
+    this.clientService.getAll('').subscribe(cls => this._clients.set(cls));
   }
 
   onClientChange(client: Client): void {
     this.selectedClient = client;
     this.clientContext.setClient(client);
-    console.log('client changed : ' + JSON.stringify(client));
     this.router.navigate(['/encheres']);
   }
 }
