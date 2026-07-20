@@ -16,7 +16,7 @@ public abstract class FonctionelleException extends RuntimeException {
     protected final int code;
 
 
-    public FonctionelleException(int code, String message) {
+    protected FonctionelleException(int code, String message) {
         super(message);
         this.code = code;
 

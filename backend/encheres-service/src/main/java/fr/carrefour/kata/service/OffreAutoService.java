@@ -1,7 +1,10 @@
 package fr.carrefour.kata.service;
 
 import fr.carrefour.kata.dto.EnchereDto;
-import fr.carrefour.kata.entity.*;
+import fr.carrefour.kata.entity.Client;
+import fr.carrefour.kata.entity.Enchere;
+import fr.carrefour.kata.entity.Offre;
+import fr.carrefour.kata.entity.OffreAuto;
 import fr.carrefour.kata.enums.StatutEnchere;
 import fr.carrefour.kata.enums.TypeEnchere;
 import fr.carrefour.kata.exception.*;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
 /**
  * Service pour la configuration d'offres automatiques par les clients.
  *

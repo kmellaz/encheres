@@ -1,5 +1,5 @@
 import {Component, inject, signal} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {Enchere} from '../../models/enchere';
 import {EncheresService} from '../../services/encheres.service';
 import {CommonModule, Location} from '@angular/common';
@@ -22,7 +22,8 @@ export class EncheresComponent {
   }
 
   constructor(private enchereService : EncheresService,
-              private location: Location) {
+              private location: Location,
+              private router: Router) {
     console.info('constructor EncheresComponent');
   }
 
@@ -30,6 +31,14 @@ export class EncheresComponent {
     console.info('ngOnInit dans EncheresComponent');
     console.info('client connecté : ' + this.clientContext.clientSelectionne()?.nom + ' ' + this.clientContext.clientSelectionne()?.prenom);
     this.loadEncheres();
+  }
+
+  goToDetail(id: number): void {
+    console.info('goToDetail id = ' + id);
+    if(id){
+      this.router.navigate(['/detailEnchere', id]);
+    }
+
   }
 
   getTempsRestant(dateFin: Date | string): string {
