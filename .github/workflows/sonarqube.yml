@@ -28,3 +28,5 @@ jobs:
           args: >
             -Dsonar.projectKey=kmellaz
             -Dsonar.organization=MELLAZ
+            -Dsonar.verbose=true
+            
