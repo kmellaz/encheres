@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDateTime;import java.time.ZoneId;
 
 /**
  * Service pour la configuration d'offres automatiques par les clients.
@@ -66,7 +66,7 @@ public class OffreAutoService {
                 .client(client)
                 .enchere(enchere)
                 .montantMax(montantMax)
-                .dateCreation(LocalDateTime.now())
+                .dateCreation(LocalDateTime.now(ZoneId.systemDefault()))
                 .build();
 
         this.offreRepository.save(offre);

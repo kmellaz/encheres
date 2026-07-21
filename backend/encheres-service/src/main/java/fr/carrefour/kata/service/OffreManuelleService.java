@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDateTime;import java.time.ZoneId;
 /**
  * Service gérant les offres manuelles (soumission client).
  *
@@ -49,7 +49,7 @@ public class OffreManuelleService {
         Enchere enchere = this.enchereRepository.findById(enchereId).orElseThrow(() -> new ObjetNonTrouveException("Enchere n'est pas trouvée id: " + enchereId));
 
         if (StatutEnchere.FINISHED.equals(enchere.getStatut())
-            || enchere.getDateFin().isBefore(LocalDateTime.now())) {
+            || enchere.getDateFin().isBefore(LocalDateTime.now(ZoneId.systemDefault()))) {
             throw new EnchereInactiveException("L'enchère est finie.");
         }
 
@@ -76,7 +76,7 @@ public class OffreManuelleService {
                 .client(client)
                 .enchere(enchere)
                 .montant(montant)
-                .dateCreation(LocalDateTime.now())
+                .dateCreation(LocalDateTime.now(ZoneId.systemDefault()))
                 .build();
 
         try {
@@ -134,7 +134,7 @@ public class OffreManuelleService {
                     .client(client)
                     .enchere(enchere)
                     .montantAuto(montantAuto)
-                    .dateCreation(LocalDateTime.now())
+                    .dateCreation(LocalDateTime.now(ZoneId.systemDefault()))
                     .build();
             try {
                 this.offreRepository.save(nouvelleOffreAuto);

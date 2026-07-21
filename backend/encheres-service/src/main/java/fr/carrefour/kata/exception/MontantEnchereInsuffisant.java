@@ -10,8 +10,8 @@ import java.math.BigDecimal;
  */
 
 public class MontantEnchereInsuffisant extends FonctionelleException {
-    private BigDecimal montantPropose;
-    private BigDecimal montantMinimum;
+    private final BigDecimal montantPropose;
+    private final BigDecimal montantMinimum;
 
     public MontantEnchereInsuffisant(BigDecimal montantPropose, BigDecimal montantMinimum, String message) {
         super(FonctionelleException.MONTANT_ENCHERE_INSUFFISANT_CODE, message);
