@@ -78,10 +78,13 @@ jobs:
         working-directory: frontend/encheres-frontend
         run: npm ci
 
-      - name: Sonar Analysis
-        working-directory: backend/encheres-service
+      - name: Analyze with SonarCloud
+        uses: SonarSource/sonarqube-scan-action@v6
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          mvn -B verify sonar:sonar \
-            -Dsonar.token=${SONAR_TOKEN}
+        with:
+          args: >
+            -Dsonar.projectKey=encheres
+            -Dsonar.organization=kmellaz
+            -Dsonar.verbose=true
