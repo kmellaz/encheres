@@ -10,7 +10,7 @@ VALUES (1, 'Dupont', 'Jean', 'jean.dupont@example.com'),
 
 -- 2) Enchères
 INSERT INTO enchere (id, description, montant_initial, montant_courant, date_debut, date_fin, statut, type, version)
-VALUES (1, 'Vélo électrique', 100.00, 150.00, '2026-06-01 10:00:00', '2026-07-22 13:00:00', 'ACTIVE','MANUELLE',0L),
+VALUES (1, 'Vélo électrique', 100.00, 150.00, '2026-06-01 10:00:00', '2027-07-22 13:00:00', 'ACTIVE','MANUELLE',0L),
        (2, 'Téléviseur 4K', 200.00, 220.00, '2026-05-20 09:00:00', '2027-05-25 20:00:00', 'ACTIVE','MANUELLE', 0L);
 
 
