@@ -8,9 +8,9 @@ import {OffreRequest} from '../models/offre-request';
   providedIn: 'root',
 })
 export class EncheresService {
-  baseUrl: string = 'http://localhost:8080/api/encheres';
+  private readonly baseUrl: string = 'http://localhost:8080/api/encheres';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   // Récupérer les enchères actives
   getAll(endPoint: string): Observable<Enchere[]> {

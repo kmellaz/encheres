@@ -9,7 +9,7 @@ import {Client} from '../models/client';
 export class ClientService {
   baseUrl: string = 'http://localhost:8080/api/encheres/clients';
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   // Récupérer tous les éléments
   getAll(endPoint: string): Observable<Client[]> {

@@ -20,13 +20,13 @@
         <div class="row">
           <div class="col">
             @if(isManuelle()){
-            <label class="form-label">
+            <label class="form-label" for="montantId">
               Montant
             </label>
             }
 
             @if(isAutomatique()){
-            <label class="form-label">
+            <label class="form-label" for="montantId">
               Montant maximum
             </label>
             }
@@ -34,6 +34,7 @@
 
           <div class="col">
             <input
+              id="montantId"
               type="number"
               class="form-control"
               [(ngModel)]="montant">
@@ -42,7 +43,7 @@
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-secondary"
+        <button class="btn btn-primary"
                 (click)="annuler()">
           Annuler
         </button>

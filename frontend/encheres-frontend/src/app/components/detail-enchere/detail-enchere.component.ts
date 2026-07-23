@@ -1,4 +1,4 @@
-import {Component, signal} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {EncheresService} from '../../services/encheres.service';
 import {Enchere} from '../../models/enchere';
@@ -14,17 +14,17 @@ import {ClientContextService} from '../../services/client-context.service';
   templateUrl: './detail-enchere.component.html',
   styleUrl: './detail-enchere.component.css',
 })
-export class DetailEnchereComponent {
+export class DetailEnchereComponent implements OnInit{
   enchereId!: string;
   enchere = signal<Enchere | null>(null);
   msgError= signal<string|null>(null);
   afficherModal: boolean = false;
   typeEnchereToDo: TypeEnchere = TypeEnchere.MANUELLE;
 
-  constructor(private clientContext: ClientContextService,
-              private enchereService: EncheresService,
-              private route: ActivatedRoute,
-              private location: Location) {
+  constructor(private readonly clientContext: ClientContextService,
+              private readonly enchereService: EncheresService,
+              private readonly route: ActivatedRoute,
+              private readonly location: Location) {
 
   }
 

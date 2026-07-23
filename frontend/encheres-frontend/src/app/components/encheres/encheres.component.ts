@@ -1,4 +1,4 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {Enchere} from '../../models/enchere';
 import {EncheresService} from '../../services/encheres.service';
@@ -11,19 +11,19 @@ import {ClientContextService} from '../../services/client-context.service';
   templateUrl: './encheres.component.html',
   styleUrl: './encheres.component.css',
 })
-export class EncheresComponent {
+export class EncheresComponent implements OnInit{
   clientContext= inject(ClientContextService);
 
-  private _encheres = signal<Enchere[]>([]);
+  private readonly _encheres = signal<Enchere[]>([]);
   encheres = this._encheres.asReadonly();
 
   loadEncheres() {
     this.enchereService.getAll("").subscribe(encheres => this._encheres.set(encheres));
   }
 
-  constructor(private enchereService : EncheresService,
-              private location: Location,
-              private router: Router) {
+  constructor(private readonly enchereService : EncheresService,
+              private readonly location: Location,
+              private readonly router: Router) {
     console.info('constructor EncheresComponent');
   }
 
