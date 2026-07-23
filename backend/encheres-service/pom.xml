@@ -16,6 +16,13 @@
     <name>encheres-service</name>
     <packaging>jar</packaging>
 
+    <properties>
+        <java.version>21</java.version>
+        <sonar.organization>kmellaz</sonar.organization>
+        <sonar.projectKey>encheres</sonar.projectKey>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
