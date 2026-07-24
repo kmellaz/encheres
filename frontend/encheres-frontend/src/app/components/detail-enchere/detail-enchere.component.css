@@ -1,0 +1,238 @@
+.detail-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* En-tête */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.title {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+}
+
+.btn-back {
+  color: #777777; /* Light gray text */
+  background-color: #ffffff; /* White background */
+  border: 2px solid white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-back:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateX(-5px);
+}
+
+.icon {
+  font-size: 1.2rem;
+}
+
+/* Carte principale */
+.card-detail {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  max-width: 1000px;
+  margin: 0 auto;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Section description */
+.description-section {
+  padding: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title::before {
+  content: '📝';
+  font-size: 1.4rem;
+}
+
+.description-text {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+  overflow: auto;
+}
+
+/* Grille d'information */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Carte d'information */
+.info-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 1.5rem;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  border-left: 4px solid #667eea;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+}
+
+.info-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.8rem;
+}
+
+.info-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-value.primary {
+  color: #667eea;
+}
+
+.info-value.highlight {
+  color: #764ba2;
+  font-size: 1.5rem;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  color: #777777; /* Light gray text */
+  background-color: #ffffff; /* White background */
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Pied de page */
+.footer {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+  text-align: right;
+  border-top: 2px solid #e0e0e0;
+}
+
+/* Boutons */
+.btn {
+  padding: 0.8rem 1.8rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary {
+  color: #595959; /* Darker gray text */
+  background-color: #ffffff; /* White background */
+}
+
+.btn-secondary:hover {
+  background-color: #764ba2;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Responsive mobile */
+@media (max-width: 576px) {
+  .detail-container {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .card-detail {
+    border-radius: 8px;
+  }
+
+  .description-section,
+  .info-grid {
+    padding: 1.5rem;
+  }
+
+  .info-value.highlight {
+    font-size: 1.3rem;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

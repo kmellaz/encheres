@@ -1,0 +1,20 @@
+<div class="container mt-2">
+  <div class="row  align-items-center pb-2">
+    <div class="col-md-3">
+      <label for="client" style="float: right;">Client connecté :</label>
+    </div>
+    <div class="col-md-3">
+      <select *ngIf="clients() as clients" id="client" class="form-select"
+              [(ngModel)]="selectedClient" name="client"
+              (ngModelChange)="onClientChange($event)">
+        <option [ngValue]="null" disabled>Sélectionner un client</option>
+        <option *ngFor="let client of clients" [ngValue]="client">
+          {{ client.nom }} {{ client.prenom }}
+        </option>
+      </select>
+
+    </div>
+  </div>
+</div>
+
+

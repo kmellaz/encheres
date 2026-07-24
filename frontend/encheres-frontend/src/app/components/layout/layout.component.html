@@ -1,0 +1,31 @@
+<header class="bg-white py-2">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+      <div class="d-flex align-items-center mb-2 mb-md-0">
+        <img src="carrefour.png" alt="Logo" style="height: 3.5rem; margin-right: .75rem;"/>
+        <div>
+          <div class="fw-bold">KATA CARREFOUR</div>
+          <small class="text-muted d-none d-md-block">Démonstration KATA</small>
+        </div>
+      </div>
+
+      <nav class="mb-2 mb-md-0">
+        <a routerLink="" >Home</a>
+        <span class="text-muted mx-2">|</span>
+        <a routerLink="encheres" >Enchères</a>
+      </nav>
+
+      <div class="text-end small text-muted">
+        <div>Bienvenue — {{ today | date:'dd/MM/yyyy' }}</div>
+        <div *ngIf="clientContext.clientSelectionne() as client">
+          {{ client.nom }} {{ client.prenom }}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="content bg-light">
+  <router-outlet></router-outlet>
+</div>

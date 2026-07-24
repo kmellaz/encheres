@@ -1,0 +1,87 @@
+name: Build & SonarQube Cloud
+
+on:
+  push:
+    branches: [ "branch-frontend" ]
+  pull_request:
+    branches: [ "branch-frontend" ]
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: maven
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Angular dependencies
+        working-directory: frontend/encheres-frontend
+        run: npm ci --ignore-scripts
+
+      - name: Build Angular
+        working-directory: frontend/encheres-frontend
+        run: npm run build
+
+      - name: Build backend
+        working-directory: backend/encheres-service
+        run: mvn -B clean install
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: springboot-jar
+          path: backend/encheres-service/target/*.jar
+
+  sonar:
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: maven
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install frontend
+        working-directory: frontend/encheres-frontend
+        run: npm ci --ignore-scripts
+
+      - name: Analyze with SonarCloud
+        working-directory: backend/encheres-service
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+            mvn verify sonar:sonar
