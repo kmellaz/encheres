@@ -2,9 +2,9 @@ name: Build & SonarQube Cloud
 
 on:
   push:
-    branches: [ "branch-frontend" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "branch-frontend" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
