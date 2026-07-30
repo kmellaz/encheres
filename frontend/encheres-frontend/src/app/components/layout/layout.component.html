@@ -10,15 +10,28 @@
       </div>
 
       <nav class="mb-2 mb-md-0">
-        <a routerLink="" >Home</a>
+        <a routerLink="">Home</a>
         <span class="text-muted mx-2">|</span>
-        <a routerLink="encheres" >Enchères</a>
+        <a routerLink="encheres">Enchères</a>
       </nav>
 
       <div class="text-end small text-muted">
-        <div>Bienvenue — {{ today | date:'dd/MM/yyyy' }}</div>
-        <div *ngIf="clientContext.clientSelectionne() as client">
-          {{ client.nom }} {{ client.prenom }}
+        <div class="d-flex align-items-center justify-content-end gap-2">
+          <span>Bienvenue </span>
+
+          <span *ngIf="clientContext.clientSelectionne() as client">
+              {{ client.nom }} {{ client.prenom }}
+          </span>
+
+          <span>
+             — {{ today | date:'dd/MM/yyyy' }}
+          </span>
+
+          <button *ngIf="clientContext.clientSelectionne()"
+                  class="btn btn-sm btn-outline-secondary" (click)="logout()">
+            ⎋ Déconnexion
+          </button>
+
         </div>
 
       </div>

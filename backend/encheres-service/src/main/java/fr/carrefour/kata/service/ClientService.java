@@ -29,7 +29,6 @@ public class ClientService {
 
    /**
     * Récupère tous les clients du système et les mappe en {@link fr.carrefour.kata.dto.ClientDto}.
-    *
     * @return liste de {@link fr.carrefour.kata.dto.ClientDto}, jamais null (peut être vide)
     */
    @Transactional(readOnly = true)
@@ -82,9 +81,9 @@ public class ClientService {
      * @throws FonctionelleException
      */
     @Transactional(readOnly = true)
-    public ClientDto trouverClientParId(Long idClient) throws FonctionelleException {
+    public ClientDto trouverClientParId(Long idClient) {
         Client client = this.clientRepository.findById(idClient).orElseThrow(() -> new ObjetNonTrouveException("le client est introuvable id: " + idClient));
-        return fr.carrefour.kata.dto.ClientDto.builder()
+        return ClientDto.builder()
                 .id(client.getId())
                 .nom(client.getNom())
                 .prenom(client.getPrenom())

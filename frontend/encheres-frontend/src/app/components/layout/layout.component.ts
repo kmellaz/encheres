@@ -1,7 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {CommonModule, DatePipe} from '@angular/common';
 import {ClientContextService} from '../../services/client-context.service';
+import {AuthService} from '../../services/auth.service';
 
 
 @Component({
@@ -15,11 +16,17 @@ export class LayoutComponent implements OnInit{
   readonly clientContext = inject(ClientContextService);
   readonly today : Date = new Date();
 
-  constructor() {
+  constructor(private authService : AuthService, private router: Router) {
   }
 
-ngOnInit() {
-  console.info('dans ngOnInit() LayoutComponent ' );
-}
+  ngOnInit() {
+    console.info('dans ngOnInit() LayoutComponent ' );
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.clientContext.clear();
+    this.router.navigate(['/login']);
+  }
 
 }

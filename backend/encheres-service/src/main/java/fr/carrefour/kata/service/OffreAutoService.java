@@ -47,7 +47,7 @@ public class OffreAutoService {
   */
 
     @Transactional
-    public EnchereDto creerOffre(Long clientId, Long enchereId, BigDecimal montantMax) throws FonctionelleException {
+    public EnchereDto creerOffre(Long clientId, Long enchereId, BigDecimal montantMax) {
         Client client = this.clientRepository.findById(clientId).orElseThrow(() -> new ObjetNonTrouveException("Client n'est pas trouvé id: " + clientId));
         Enchere enchere = this.enchereRepository.findById(enchereId).orElseThrow(() -> new ObjetNonTrouveException("Enchere n'est pas trouvée id: " + enchereId));
 

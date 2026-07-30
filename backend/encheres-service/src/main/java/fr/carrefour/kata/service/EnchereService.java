@@ -38,7 +38,7 @@ public class EnchereService {
      * @throws fr.carrefour.kata.exception.FonctionelleException si l'enchère n'existe pas
      */
     @Transactional(readOnly = true)
-    public EnchereDto trouverEnchereParId(Long id) throws FonctionelleException {
+    public EnchereDto trouverEnchereParId(Long id) {
         Enchere enchere = enchereRepository.findById(id)
                 .orElseThrow(() -> new ObjetNonTrouveException("Enchere est introuvable id: " + id));
         return EnchereDto.builder()
@@ -89,7 +89,6 @@ public class EnchereService {
     * Récupère la liste des enchères qui sont actives (statut ACTIVE).
     *
     * @return liste non null (éventuellement vide) de {@link fr.carrefour.kata.dto.EnchereDto}
-    * @since 1.0
     */
    @Transactional(readOnly = true)
     public List<EnchereDto> trouverEncheresActives() {

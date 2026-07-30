@@ -1,4 +1,18 @@
--- data.sql : données d'exemple pour Client, Enchere et OffreManuelle
+-- data.sql : données d'exemple pour User, Client, Enchere et OffreManuelle
+
+-- 0)
+    INSERT INTO users (id, username, password)
+    VALUES (1, 'Dupont', '$2a$10$d4v9wufm7e32lyVkbdjok.9gAok30ijt8YBbhiWrJSyYEztpTqXQ.'),
+           (2, 'Martin', '$2a$10$d4v9wufm7e32lyVkbdjok.9gAok30ijt8YBbhiWrJSyYEztpTqXQ.'),
+           (3, 'Bernard', '$2a$10$d4v9wufm7e32lyVkbdjok.9gAok30ijt8YBbhiWrJSyYEztpTqXQ.'),
+        (4, 'Moreau', '$2a$10$d4v9wufm7e32lyVkbdjok.9gAok30ijt8YBbhiWrJSyYEztpTqXQ.');
+
+INSERT INTO user_roles (user_id, role)
+VALUES
+    (1,'ADMIN'),
+    (2,'USER'),
+    (3,'USER'),
+    (4,'USER');
 
 -- 1) Clients
 INSERT INTO client (id, nom, prenom, email)

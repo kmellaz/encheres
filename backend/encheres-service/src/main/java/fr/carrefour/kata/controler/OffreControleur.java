@@ -4,6 +4,7 @@ import fr.carrefour.kata.dto.EnchereDto;
 import fr.carrefour.kata.request.OffreRequest;
 import fr.carrefour.kata.service.OffreAutoService;
 import fr.carrefour.kata.service.OffreManuelleService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * - POST /api/encheres/offres/manuelle : dépôt d'une offre manuelle
  *
  */
-
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("api/encheres/offres")
 @RequiredArgsConstructor

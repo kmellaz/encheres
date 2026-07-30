@@ -3,6 +3,7 @@ package fr.carrefour.kata.controler;
 import fr.carrefour.kata.dto.ClientDto;
 import fr.carrefour.kata.exception.FonctionelleException;
 import fr.carrefour.kata.service.ClientService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
  * - GET /api/encheres/clients : récupérer la liste des clients
  *
  */
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("api/encheres/clients")
 @RequiredArgsConstructor
@@ -40,11 +42,11 @@ public class ClientControleur {
     /**
      * Endpoint GET qui retourne le client (DTO) par son identifiant.
      * @param id
-     * @return
-     * @throws FonctionelleException
+     * @return ResponseEntity contenant le {@link fr.carrefour.kata.dto.ClientDto} correspondant à l'identifiant fourni
+     * @throws FonctionelleException si le client n'est pas trouvé
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ClientDto> trouverClientParId(@NotNull  @PathVariable Long id) throws FonctionelleException {
+    public ResponseEntity<ClientDto> trouverClientParId(@NotNull  @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(this.clientService.trouverClientParId(id));
     }
 

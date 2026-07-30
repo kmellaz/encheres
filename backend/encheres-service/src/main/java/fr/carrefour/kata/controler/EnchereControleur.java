@@ -2,6 +2,7 @@ package fr.carrefour.kata.controler;
 
 import fr.carrefour.kata.dto.EnchereDto;
 import fr.carrefour.kata.service.EnchereService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.List;
  * - GET /api/encheres/{id} : détail d'une enchère
  *
  */
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("api/encheres")
 @RequiredArgsConstructor

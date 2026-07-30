@@ -44,7 +44,7 @@ public class OffreManuelleService {
  *         enchère inactive, montant insuffisant ou incorrect, etc.)
  */
     @Transactional(noRollbackFor = MaxEnchereAtteintException.class)
-    public EnchereDto deposerOffre(Long clientId, Long enchereId, BigDecimal montant) throws FonctionelleException {
+    public EnchereDto deposerOffre(Long clientId, Long enchereId, BigDecimal montant) {
         Client client = this.clientRepository.findById(clientId).orElseThrow(() -> new ObjetNonTrouveException("Client n'est pas trouvé id: " + clientId));
         Enchere enchere = this.enchereRepository.findById(enchereId).orElseThrow(() -> new ObjetNonTrouveException("Enchere n'est pas trouvée id: " + enchereId));
 
@@ -114,7 +114,7 @@ public class OffreManuelleService {
  * @throws IllegalStateException si l'enchère n'est pas de type automatique ou si la configuration est absente
  * FonctionelleException si le montant maximum de l'enchère automatique a été atteint
  */
-    private void surencherirAutomatiquement(Enchere enchere) throws FonctionelleException {
+    private void surencherirAutomatiquement(Enchere enchere) {
         if (!TypeEnchere.AUTOMATIQUE.equals(enchere.getType())) {
             throw new IllegalStateException("l'enchère doit être de type automatique pour pouvoir surencherir automatiquement id: " + enchere.getId());
         }

@@ -18,7 +18,14 @@ export class EncheresComponent implements OnInit{
   encheres = this._encheres.asReadonly();
 
   loadEncheres() {
-    this.enchereService.getAll("").subscribe(encheres => this._encheres.set(encheres));
+    this.enchereService.getAll("").subscribe(
+      {
+        next: (encheres) => this._encheres.set(encheres),
+        error: (err) => {
+          console.error("Erreur dans loadEncheres:", err);
+        }
+      }
+    );
   }
 
   constructor(private readonly enchereService : EncheresService,

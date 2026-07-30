@@ -1,4 +1,8 @@
 
+jwt:
+  secret: "my-super-secret-key-for-jwt-signing-2026!"
+  expiration-ms: 3600000 # 1h
+
 spring:
   application:
     name: ENCHERES-SERVICE

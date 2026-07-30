@@ -15,7 +15,7 @@ export class ClientContextService {
     }
   }
 
-  setClient(client: Client): void {
+  setClient(client: Client | null): void {
     this.clientSelectionne.set(client);
     sessionStorage.setItem('currentClient', JSON.stringify(client));
     console.log('setClient() done !!');
