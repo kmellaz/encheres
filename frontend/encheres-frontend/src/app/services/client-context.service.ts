@@ -8,7 +8,6 @@ export class ClientContextService {
   readonly clientSelectionne = signal<Client | null>(null);
 
   constructor() {
-    console.log('constructor ClientContextService');
     const storedClient = sessionStorage.getItem('currentClient');
     if (storedClient) {
       this.clientSelectionne.set(JSON.parse(storedClient) as Client);
@@ -17,13 +16,15 @@ export class ClientContextService {
 
   setClient(client: Client | null): void {
     this.clientSelectionne.set(client);
-    sessionStorage.setItem('currentClient', JSON.stringify(client));
-    console.log('setClient() done !!');
+    if (client) {
+      sessionStorage.setItem('currentClient', JSON.stringify(client));
+    } else {
+      sessionStorage.removeItem('currentClient');
+    }
   }
 
   clear(): void {
     this.clientSelectionne.set(null);
     sessionStorage.removeItem('currentClient');
-    console.log('clear client done !!');
   }
 }

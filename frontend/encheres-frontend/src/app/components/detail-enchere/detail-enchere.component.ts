@@ -1,9 +1,10 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {EncheresService} from '../../services/encheres.service';
 import {Enchere} from '../../models/enchere';
 import {CommonModule, Location} from '@angular/common';
-import {TypeEnchere} from '../../models/enums/type-enchere.enum';
+import {EnchereStatus} from '../../models/enums/enchere-status.enum';
+import {BidType} from '../../models/enums/bid-type.enum';
 import {OffreMontantComponent} from '../offre-montant/offre-montant.component';
 import {OffreRequest} from '../../models/offre-request';
 import {ClientContextService} from '../../services/client-context.service';
@@ -13,93 +14,87 @@ import {ClientContextService} from '../../services/client-context.service';
   imports: [CommonModule, OffreMontantComponent],
   templateUrl: './detail-enchere.component.html',
   styleUrl: './detail-enchere.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DetailEnchereComponent implements OnInit{
+export class DetailEnchereComponent implements OnInit {
   enchereId!: string;
   enchere = signal<Enchere | null>(null);
-  msgError= signal<string|null>(null);
-  afficherModal: boolean = false;
-  typeEnchereToDo: TypeEnchere = TypeEnchere.MANUELLE;
+  msgError = signal<string | null>(null);
+  isLoading = signal<boolean>(false);
+  afficherModal = signal<boolean>(false);
+  typeEnchereToDo: BidType = BidType.MANUAL;
+  isSubmittingOffer = signal<boolean>(false);
 
-  constructor(private readonly clientContext: ClientContextService,
-              private readonly enchereService: EncheresService,
-              private readonly route: ActivatedRoute,
-              private readonly location: Location) {
+  EnchereStatus = EnchereStatus;
+  BidType = BidType;
 
-  }
+  constructor(
+    private clientContext: ClientContextService,
+    private enchereService: EncheresService,
+    private route: ActivatedRoute,
+    private location: Location
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.enchereId = params.get('idEnchere') ?? '-1';
-      if (this.enchereId) {
+      if (this.enchereId && this.enchereId !== '-1') {
         this.loadEnchere();
       }
-    })
-    console.log("client connecté dans detailEnchere : " + this.clientContext.clientSelectionne()?.id);
+    });
   }
 
-  loadEnchere() {
-    this.enchereService.getById('', this.enchereId).subscribe(
-      enchere => {
-        this.enchere.set(enchere);
-        console.log('Load enchere done !');
-      }
-    );
+  loadEnchere(): void {
+    this.isLoading.set(true);
+    this.msgError.set(null);
+
+    this.enchereService.getById(this.enchereId)
+      .subscribe({
+        next: (enchere) => this.enchere.set(enchere),
+        error: (err) => this.msgError.set('Erreur lors du chargement de l\'enchère'),
+        complete: () => this.isLoading.set(false)
+      });
   }
-
-
 
   surencherir(): void {
-    this.typeEnchereToDo = TypeEnchere.MANUELLE;
-    this.afficherModal = true;
+    this.typeEnchereToDo = BidType.MANUAL;
+    this.afficherModal.set(true);
   }
 
   autoEnchere(): void {
-    this.typeEnchereToDo = TypeEnchere.AUTOMATIQUE;
-    this.afficherModal = true;
+    this.typeEnchereToDo = BidType.AUTOMATIC;
+    this.afficherModal.set(true);
   }
 
   fermerModal(): void {
-    this.afficherModal = false;
+    this.afficherModal.set(false);
   }
 
   traiterOffre(montant: number): void {
-    console.log("Traitement de l'offre avec le montant : " + montant);
     this.msgError.set(null);
+
     const offre: OffreRequest = {
       clientId: this.clientContext.clientSelectionne()?.id ?? null,
       enchereId: this.enchereId ? Number(this.enchereId) : null,
       montant: montant
-    }
+    };
 
-    console.log("offre envoyée : " + JSON.stringify(offre) );
+    this.isSubmittingOffer.set(true);
 
-    if (this.typeEnchereToDo === TypeEnchere.MANUELLE) {
-      const enchere$ = this.enchereService.deposerOffre('/offres/manuelle', offre);
-      enchere$.subscribe({
-        next: (e: Enchere) => {
-          console.log(JSON.stringify(e));
-          this.enchere.set(e);
-        },
-        error: (err) => {
-          this.msgError.set(err.error?.message?? 'Une erreur est survenue');
-        }
-      }
-      );
+    const offreObservable = this.typeEnchereToDo === BidType.MANUAL
+      ? this.enchereService.deposerOffreManuelle(offre)
+      : this.enchereService.deposerOffreAutomatique(offre);
 
-    } else if(this.typeEnchereToDo === TypeEnchere.AUTOMATIQUE) {
-      const enchere$ = this.enchereService.deposerOffre('/offres/auto', offre)
-      enchere$.subscribe({
-        next: (e: Enchere) => {
-          console.log(JSON.stringify(e));
-          this.enchere.set(e);
-        },
-        error: (err) => {
-          this.msgError.set(err.error?.message?? 'Une erreur est survenue');
-        }
-      });
-    }
-    this.fermerModal();
+    offreObservable.subscribe({
+      next: (enchere) => {
+        this.enchere.set(enchere);
+        this.fermerModal();
+      },
+      error: (err) => {
+        this.msgError.set(err?.error?.message ?? 'Erreur lors de la soumission de l\'offre');
+      },
+      complete: () => this.isSubmittingOffer.set(false)
+    });
   }
 
   goBack(): void {

@@ -1,3 +1,16 @@
+@if (isLoading()){
+  <div class="container mt-3">
+    <div class="alert alert-info">Chargement des enchères...</div>
+  </div>
+}
+
+@if (hasError()){
+  <div class="container mt-3">
+    <div class="alert alert-danger">{{ hasError() }}</div>
+    <button class="btn btn-primary" (click)="loadEncheres()">Réessayer</button>
+  </div>
+}
+
 @if (encheres(); as encheres){
 <div class="container mt-3">
   <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-3 gap-2">

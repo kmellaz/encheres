@@ -1,4 +1,4 @@
-<div *ngIf="enchere() as enchere" class="detail-container">
+<div *ngIf="!isLoading() && enchere() as enchere" class="detail-container">
   <!-- En-tête avec bouton retour -->
   <div class="header">
     <button class="btn-back" (click)="goBack()" title="Retour">
@@ -66,19 +66,22 @@
     <div class="footer d-flex justify-content-end gap-2 flex-wrap">
 
       <!-- Bouton surenchérir -->
-      <button *ngIf="enchere.statut==='ACTIVE'"
+      <button *ngIf="enchere.statut === EnchereStatus.ACTIVE"
               class="btn btn-primary"
+              [disabled]="isSubmittingOffer()"
               (click)="surencherir()"
               title="Faire une surenchère">
+        <span *ngIf="isSubmittingOffer()" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
         Surenchérir
       </button>
 
       <!-- Bouton auto-enchère -->
-      <button
-        *ngIf="enchere.statut==='ACTIVE'"
-        class="btn btn-primary"
-        (click)="autoEnchere()"
-        title="Faire une auto-enchère">
+      <button *ngIf="enchere.statut === EnchereStatus.ACTIVE"
+              class="btn btn-primary"
+              [disabled]="isSubmittingOffer()"
+              (click)="autoEnchere()"
+              title="Faire une auto-enchère">
+        <span *ngIf="isSubmittingOffer()" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
         Auto-enchère
       </button>
 
@@ -90,11 +93,20 @@
 
   <!-- popop de saisie de montant d'une offre d'enchère -->
   <app-offre-montant
-    *ngIf="afficherModal"
-    [typeEnchere]= "typeEnchereToDo"
-    (fermer) = "fermerModal()"
-    (validerMontant) = "traiterOffre($event)">
-
+    *ngIf="afficherModal()"
+    [typeEnchere]="typeEnchereToDo"
+    [isSubmitting]="isSubmittingOffer()"
+    (fermer)="fermerModal()"
+    (validerMontant)="traiterOffre($event)">
   </app-offre-montant>
 
+</div>
+
+<div *ngIf="isLoading()" class="container mt-3">
+  <div class="alert alert-info">Chargement de l'enchère...</div>
+</div>
+
+<div *ngIf="msgError() && !enchere()" class="container mt-3">
+  <div class="alert alert-danger">{{ msgError() }}</div>
+  <button class="btn btn-primary" (click)="loadEnchere()">Réessayer</button>
 </div>

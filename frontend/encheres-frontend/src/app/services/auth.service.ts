@@ -2,35 +2,35 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
+import {ApiConfigService} from './api-config.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly baseUrl: string = 'http://localhost:8080/api/auth';
   private tokenKey = 'access_token';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfigService
+  ) {}
 
-  login(endPoint: string, username: string, password: string):Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(this.baseUrl + endPoint, { username, password })
+  login(username: string, password: string): Observable<{ token: string }> {
+    const url = `${this.apiConfig.baseUrl}${this.apiConfig.authEndpoints.login}`;
+    return this.http.post<{ token: string }>(url, { username, password })
       .pipe(
         tap(res => localStorage.setItem(this.tokenKey, res.token)),
-        catchError(error => {
-          console.error('Erreur de connexion', error);
-          return throwError(() => error);
-        })
+        catchError(error => throwError(() => error))
       );
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem(this.tokenKey);
-
   }
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
-    }
+  }
 
   isAuthenticated(): boolean {
     return !!this.getToken();
-    }
+  }
 }

@@ -14,41 +14,61 @@ import {ClientService} from '../../services/client.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-
   login = '';
   password = '';
-  selectedClient: Client | null = null ;
+  selectedClient: Client | null = null;
   msgErreur = signal<string | null>(null);
+  isLoading = signal<boolean>(false);
 
-  constructor(private auth: AuthService,
-              private router: Router,
-              private readonly clientContext: ClientContextService,
-              private readonly clientService : ClientService) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private clientContext: ClientContextService,
+    private clientService: ClientService
+  ) {}
 
-  authenticate() {
+  authenticate(): void {
+    if (!this.validateForm()) {
+      return;
+    }
+
     this.msgErreur.set(null);
-    console.log('Login attempt with:', this.login, this.password);
-    this.auth.login('/login', this.login, this.password)
+    this.isLoading.set(true);
+
+    this.auth.login(this.login, this.password)
       .subscribe({
-        next: (response) => {
-          console.log("Token reçu :", response.token);
-          console.log("Token stocké dans localStorage:", localStorage.getItem('access_token'));
-          this.setSelectedClient();
-        },
-        error: (err) => {
-          console.error("Erreur login:", err);
-          this.msgErreur.set(err.error.message);
-        }
+        next: () => this.handleLoginSuccess(),
+        error: (err) => this.handleLoginError(err),
+        complete: () => this.isLoading.set(false)
       });
   }
 
-  setSelectedClient(): void {
-    this.clientService.getAll('')
-      .subscribe(cls => {
-        this.selectedClient = cls.find(c => c.nom === this.login) || null;
-        console.log("setSelectedClient : " + JSON.stringify(this.selectedClient));
-        this.clientContext.setClient(this.selectedClient);
-        this.router.navigate(['/encheres']);
+  private validateForm(): boolean {
+    if (!this.login.trim() || !this.password.trim()) {
+      this.msgErreur.set('Veuillez remplir tous les champs');
+      return false;
+    }
+    return true;
+  }
+
+  private handleLoginSuccess(): void {
+    this.setSelectedClient();
+  }
+
+  private handleLoginError(err: any): void {
+    const message = err?.error?.message || 'Erreur de connexion';
+    this.msgErreur.set(message);
+  }
+
+  private setSelectedClient(): void {
+    this.clientService.getAll()
+      .subscribe({
+        next: (clients) => {
+          this.selectedClient = clients.find(c => c.nom === this.login) || null;
+          this.clientContext.setClient(this.selectedClient);
+          this.router.navigate(['/encheres']);
+        },
+        error: (err) => this.msgErreur.set('Erreur lors de la récupération du client')
       });
   }
 }

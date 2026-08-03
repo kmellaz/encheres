@@ -1,42 +1,56 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {TypeEnchere} from '../../models/enums/type-enchere.enum';
+import {BidType} from '../../models/enums/bid-type.enum';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-offre-montant',
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './offre-montant.component.html',
   styleUrl: './offre-montant.component.css',
 })
 export class OffreMontantComponent {
-  montant: number | null = null;
+  montant = signal<number | null>(null);
+  errorMessage = signal<string | null>(null);
 
-  @Output()
-  fermer = new EventEmitter<void>();
+  @Output() fermer = new EventEmitter<void>();
+  @Output() validerMontant = new EventEmitter<number>();
 
-  @Output()
-  validerMontant = new EventEmitter<number>();
+  @Input() typeEnchere!: BidType;
+  @Input() isSubmitting: boolean = false;
 
-  @Input()
-  typeEnchere!: TypeEnchere;
-
-
-  annuler(): void{
+  annuler(): void {
     this.fermer.emit();
+    this.resetForm();
   }
 
   valider(): void {
-    if(this.montant !== null && this.montant > 0){
-      this.validerMontant.emit(this.montant);
+    this.errorMessage.set(null);
+
+    if (this.montant() === null || this.montant() === undefined) {
+      this.errorMessage.set('Veuillez saisir un montant');
+      return;
     }
+
+    if (this.montant()! <= 0) {
+      this.errorMessage.set('Le montant doit être positif');
+      return;
+    }
+
+    this.validerMontant.emit(this.montant()!);
+    this.resetForm();
   }
 
-  isAutomatique(): boolean{
-    return this.typeEnchere === TypeEnchere.AUTOMATIQUE;
+  private resetForm(): void {
+    this.montant.set(null);
+    this.errorMessage.set(null);
   }
 
-  isManuelle(): boolean{
-    return this.typeEnchere === TypeEnchere.MANUELLE;
+  isManuelle(): boolean {
+    return this.typeEnchere === BidType.MANUAL;
   }
 
+  isAutomatique(): boolean {
+    return this.typeEnchere === BidType.AUTOMATIC;
+  }
 }

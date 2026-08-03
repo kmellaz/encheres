@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal, ChangeDetectionStrategy} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {Enchere} from '../../models/enchere';
 import {EncheresService} from '../../services/encheres.service';
@@ -10,50 +10,47 @@ import {ClientContextService} from '../../services/client-context.service';
   imports: [CommonModule, RouterModule],
   templateUrl: './encheres.component.html',
   styleUrl: './encheres.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EncheresComponent implements OnInit{
-  clientContext= inject(ClientContextService);
+export class EncheresComponent implements OnInit {
+  clientContext = inject(ClientContextService);
 
   private readonly _encheres = signal<Enchere[]>([]);
   encheres = this._encheres.asReadonly();
 
-  loadEncheres() {
-    this.enchereService.getAll("").subscribe(
-      {
-        next: (encheres) => this._encheres.set(encheres),
-        error: (err) => {
-          console.error("Erreur dans loadEncheres:", err);
-        }
-      }
-    );
-  }
+  isLoading = signal<boolean>(false);
+  hasError = signal<string | null>(null);
 
-  constructor(private readonly enchereService : EncheresService,
-              private readonly location: Location,
-              private readonly router: Router) {
-    console.info('constructor EncheresComponent');
-  }
+  constructor(
+    private enchereService: EncheresService,
+    private location: Location,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    console.info('ngOnInit dans EncheresComponent');
-    console.info('client connecté : ' + this.clientContext.clientSelectionne()?.nom + ' ' + this.clientContext.clientSelectionne()?.prenom);
     this.loadEncheres();
   }
 
+  loadEncheres(): void {
+    this.isLoading.set(true);
+    this.hasError.set(null);
+
+    this.enchereService.getAll()
+      .subscribe({
+        next: (encheres) => this._encheres.set(encheres),
+        error: (err) => this.hasError.set('Erreur lors du chargement des enchères'),
+        complete: () => this.isLoading.set(false)
+      });
+  }
+
   goToDetail(id: number): void {
-    console.info('goToDetail id = ' + id);
-    if(id){
+    if (id) {
       this.router.navigate(['/detailEnchere', id]);
     }
-
   }
 
   getTempsRestant(dateFin: Date | string): string {
-    const fin =
-      dateFin instanceof Date
-        ? dateFin
-        : new Date(dateFin);
-
+    const fin = dateFin instanceof Date ? dateFin : new Date(dateFin);
     const maintenant = new Date();
     const diff = fin.getTime() - maintenant.getTime();
 
@@ -72,5 +69,4 @@ export class EncheresComponent implements OnInit{
   goBack(): void {
     this.location.back();
   }
-
 }

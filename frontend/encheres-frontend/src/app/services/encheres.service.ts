@@ -3,29 +3,34 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Enchere} from '../models/enchere';
 import {OffreRequest} from '../models/offre-request';
+import {ApiConfigService} from './api-config.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EncheresService {
-  private readonly baseUrl: string = 'http://localhost:8080/api/encheres';
+  constructor(
+    private http: HttpClient,
+    private apiConfig: ApiConfigService
+  ) {}
 
-  constructor(private readonly http: HttpClient) {}
-
-  // Récupérer les enchères actives
-  getAll(endPoint: string): Observable<Enchere[]> {
-    return this.http.get<Enchere[]>(this.baseUrl + endPoint);
+  getAll(): Observable<Enchere[]> {
+    const url = `${this.apiConfig.baseUrl}${this.apiConfig.encheresEndpoints.base}`;
+    return this.http.get<Enchere[]>(url);
   }
 
-  // Récupérer une enchère par son id
-  getById(endPoint: string, idEnchere: string): Observable<Enchere> {
-    return this.http.get<Enchere>(this.baseUrl + endPoint + '/' + idEnchere);
+  getById(idEnchere: string): Observable<Enchere> {
+    const url = `${this.apiConfig.baseUrl}${this.apiConfig.encheresEndpoints.base}/${idEnchere}`;
+    return this.http.get<Enchere>(url);
   }
 
-  //soumettre une offre
-  deposerOffre(endPoint: string, offre: OffreRequest):Observable<Enchere> {
-    console.log("Url post offre : ", this.baseUrl + endPoint);
-    return this.http.post<Enchere>(this.baseUrl + endPoint, offre);
+  deposerOffreManuelle(offre: OffreRequest): Observable<Enchere> {
+    const url = `${this.apiConfig.baseUrl}${this.apiConfig.encheresEndpoints.offres.manuelle}`;
+    return this.http.post<Enchere>(url, offre);
   }
 
+  deposerOffreAutomatique(offre: OffreRequest): Observable<Enchere> {
+    const url = `${this.apiConfig.baseUrl}${this.apiConfig.encheresEndpoints.offres.automatique}`;
+    return this.http.post<Enchere>(url, offre);
+  }
 }

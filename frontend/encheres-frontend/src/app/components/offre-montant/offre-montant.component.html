@@ -12,11 +12,18 @@
         }
         <button type="button"
                 class="btn-close"
+                [disabled]="isSubmitting"
                 (click)="annuler()">
         </button>
       </div>
 
       <div class="modal-body">
+        @if(errorMessage()){
+          <div class="alert alert-danger" role="alert">
+            {{ errorMessage() }}
+          </div>
+        }
+        
         <div class="row">
           <div class="col">
             @if(isManuelle()){
@@ -37,19 +44,23 @@
               id="montantId"
               type="number"
               class="form-control"
+              [disabled]="isSubmitting"
               [(ngModel)]="montant">
           </div>
         </div>
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-primary"
+        <button class="btn btn-secondary"
+                [disabled]="isSubmitting"
                 (click)="annuler()">
           Annuler
         </button>
 
         <button class="btn btn-primary"
+                [disabled]="isSubmitting"
                 (click)="valider()">
+          <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
           Valider
         </button>
       </div>
