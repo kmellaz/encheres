@@ -8,8 +8,8 @@ export const environment = {
     encheres: {
       base: '/encheres',
       offres: {
-        manuelle: '/offres/manuelle',
-        automatique: '/offres/auto'
+        manuelle: '/encheres/offres/manuelle',
+        automatique: '/encheres/offres/auto'
       }
     },
     clients: {
