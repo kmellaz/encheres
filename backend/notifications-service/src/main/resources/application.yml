@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notifications-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      properties:
+        "[spring.json.value.default.type]": fr.carrefour.kata.kafka.OffreCreatedEvent
+        "[spring.json.trusted.packages]": fr.carrefour.kata.kafka
+    listener:
+      missing-topics-fatal: false

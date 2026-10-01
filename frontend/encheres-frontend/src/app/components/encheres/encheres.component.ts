@@ -13,8 +13,6 @@ import {ClientContextService} from '../../services/client-context.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EncheresComponent implements OnInit {
-  clientContext = inject(ClientContextService);
-
   private readonly _encheres = signal<Enchere[]>([]);
   encheres = this._encheres.asReadonly();
 

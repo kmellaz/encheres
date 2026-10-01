@@ -5,11 +5,13 @@ import fr.carrefour.kata.entity.*;
 import fr.carrefour.kata.enums.StatutEnchere;
 import fr.carrefour.kata.enums.TypeEnchere;
 import fr.carrefour.kata.exception.*;
+import fr.carrefour.kata.kafka.OffreCreatedEvent;
 import fr.carrefour.kata.repository.ClientRepository;
 import fr.carrefour.kata.repository.EnchereRepository;
 import fr.carrefour.kata.repository.OffreRepository;
 import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -29,6 +31,7 @@ public class OffreManuelleService {
     private final OffreRepository offreRepository;
     private final EnchereRepository enchereRepository;
     private final ClientRepository clientRepository;
+    private final KafkaTemplate<String, OffreCreatedEvent> kafkaTemplate;
 
 /**
  * Dépose une offre manuelle pour une enchère donnée.
@@ -82,6 +85,7 @@ public class OffreManuelleService {
         try {
             this.offreRepository.save(offre);
             enchere.setMontantCourant(montant);
+            kafkaTemplate.send("offre-creee", new OffreCreatedEvent(offre.getId(), enchere.getId(), client.getId(), client.getEmail(), montant));
         } catch(OptimisticLockException ole){
             throw new AccesConcurrentException("Le montant de l'enchère a été modifié par un autre client, veuiller relire les informations de l'enchère et proposer un autre montant.");
         }
