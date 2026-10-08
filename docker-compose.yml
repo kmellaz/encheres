@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: ./backend/encheres-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - encheres-network
+
+  frontend:
+    build:
+      context: ./frontend/encheres-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - encheres-network
+
+networks:
+  encheres-network:
+    driver: bridge
