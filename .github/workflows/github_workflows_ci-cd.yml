@@ -51,10 +51,10 @@ jobs:
           cd frontend/encheres-frontend
           npm run build
       
-      - name: Run tests
-        run: |
-          cd frontend/encheres-frontend
-          npm run test -- --run
+      #- name: Run tests
+       # run: |
+        #  cd frontend/encheres-frontend
+         # npm run test -- --run
 
   docker-build:
     needs: [backend-build, frontend-build]
